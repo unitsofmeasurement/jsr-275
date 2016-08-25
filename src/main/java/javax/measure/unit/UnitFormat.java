@@ -86,9 +86,6 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Locale;
 
-import javax.measure.unit.format.LocalFormat;
-import javax.measure.unit.format.UCUMFormat;
-
 /**
  * <p> This class provides the interface for formatting and parsing {@link 
  *     Unit units}.</p>
@@ -140,15 +137,22 @@ public abstract class UnitFormat extends Format {
      * 
      * @return {@link UCUMFormat#getCaseSensitiveInstance()}
      */
-    public static UnitFormat getStandard() {
-        return UCUMFormat.getCaseSensitiveInstance();
-    }
+//    public static UnitFormat getStandard() {
+//        return UCUMFormat.getCaseSensitiveInstance();
+//    }
 
     /**
      * Base constructor.
      */
     protected UnitFormat() {
     }
+
+   /**
+     * Returns the {@link UnitFormat.SymbolMap} for this unit format.
+     *
+     * @return the symbol map used by this format.
+     */
+    protected abstract SymbolMap getSymbolMap();
 
     /**
      * Formats the specified unit.
@@ -213,7 +217,90 @@ public abstract class UnitFormat extends Format {
             throw new Error(ex); // Can never happen.
         }
     }
-    
+
+    /**
+     * <p> This interface provides a set of mappings between
+     *     {@link javax.measure.unit.Unit Units} and symbols (both ways),
+     *     and from {@link javax.measure.converter.UnitConverter
+     *     UnitConverter}s to prefixes symbols (also both ways).</p>
+     */
+    public interface SymbolMap {
+
+        /**
+         * Attaches a label to the specified unit. For example:[code]
+         *    symbolMap.label(DAY.multiply(365), "year");
+         *    symbolMap.label(NonSI.FOOT, "ft");
+         * [/code]
+         *
+         * @param unit the unit to label.
+         * @param symbol the new symbol for the unit.
+         * @throws UnsupportedOperationException if setting a unit label
+         *         is not allowed.
+         */
+        void label(Unit<?> unit, String symbol);
+
+        /**
+         * Attaches an alias to the specified unit. Multiple aliases may be
+         * attached to the same unit. Aliases are used during parsing to
+         * recognize different variants of the same unit.[code]
+         *     symbolMap.alias(NonSI.FOOT, "foot");
+         *     symbolMap.alias(NonSI.FOOT, "feet");
+         *     symbolMap.alias(SI.METER, "meter");
+         *     symbolMap.alias(SI.METER, "metre");
+         * [/code]
+         *
+         * @param unit the unit to label.
+         * @param symbol the new symbol for the unit.
+         * @throws UnsupportedOperationException if setting a unit alias
+         *         is not allowed.
+         */
+        void alias(Unit<?> unit, String symbol);
+
+        /**
+         * Attaches a label to the specified prefix. For example:[code]
+         *    symbolMap.prefix(new RationalConverter(1000000000, 1), "G"); // GIGA
+         *    symbolMap.prefix(new RationalConverter(1, 1000000), "µ"); // MICRO
+         * [/code]
+         *
+         * @param cvtr the unit converter.
+         * @param prefix the prefix for the converter.
+         * @throws UnsupportedOperationException if setting a prefix
+         *         is not allowed.
+         */
+        void prefix(UnitConverter cvtr, String prefix);
+
+        /**
+         * Returns the unit for the specified symbol.
+         *
+         * @param symbol the symbol.
+         * @return the corresponding unit or <code>null</code> if none.
+         */
+        Unit<?> getUnit(String symbol);
+
+        /**
+         * Returns the symbol (label) for the specified unit.
+         *
+         * @param unit the corresponding symbol.
+         * @return the corresponding symbol or <code>null</code> if none.
+         */
+        String getSymbol(Unit<?> unit);
+
+        /**
+         * Returns the unit converter for the specified prefix.
+         *
+         * @param prefix the prefix symbol.
+         * @return the corresponding converter or <code>null</code> if none.
+         */
+        UnitConverter getConverter(String prefix);
+
+        /**
+         * Returns the prefix for the specified converter.
+         *
+         * @param converter the unit converter.
+         * @return the corresponding prefix or <code>null</code> if none.
+         */
+        String getPrefix(UnitConverter converter);
+    }
     private static final long serialVersionUID = 1L;
 
 }

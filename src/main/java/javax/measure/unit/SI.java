@@ -85,7 +85,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.measure.converter.RationalConverter;
 import javax.measure.quantity.*;
 
 /**
@@ -103,7 +102,7 @@ import javax.measure.quantity.*;
  *     
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.8 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.8 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/International_System_of_Units">Wikipedia: International System of Units</a>
  */
 public final class SI extends SystemOfUnits {
@@ -250,7 +249,7 @@ public final class SI extends SystemOfUnits {
      * mathematician and physicist Sir Isaac Newton (1642-1727).
      */
     public static final AlternateUnit<Force> NEWTON = si(new AlternateUnit<Force>(
-            "N", METRE.times(KILOGRAM).divide(SECOND.pow(2))));
+            "N", METRE.multiply(KILOGRAM).divide(SECOND.pow(2))));
 
     /**
      * The derived unit for pressure, stress (<code>Pa</code>).
@@ -267,7 +266,7 @@ public final class SI extends SystemOfUnits {
      * It is named after the English physicist James Prescott Joule (1818-1889).
      */
     public static final AlternateUnit<Energy> JOULE = si(new AlternateUnit<Energy>(
-            "J", NEWTON.times(METRE)));
+            "J", NEWTON.multiply(METRE)));
 
     /**
      * The derived unit for power, radiant, flux (<code>W</code>).
@@ -285,7 +284,7 @@ public final class SI extends SystemOfUnits {
      * Charles Augustin de Coulomb (1736-1806).
      */
     public static final AlternateUnit<ElectricCharge> COULOMB = si(new AlternateUnit<ElectricCharge>(
-            "C", SECOND.times(AMPERE)));
+            "C", SECOND.multiply(AMPERE)));
 
     /**
      * The derived unit for electric potential difference, electromotive force
@@ -333,7 +332,7 @@ public final class SI extends SystemOfUnits {
      * Wilhelm Eduard Weber (1804-1891).
      */
     public static final AlternateUnit<MagneticFlux> WEBER = si(new AlternateUnit<MagneticFlux>(
-            "Wb", VOLT.times(SECOND)));
+            "Wb", VOLT.multiply(SECOND)));
 
     /**
      * The derived unit for magnetic flux density (<code>T</code>).
@@ -360,7 +359,7 @@ public final class SI extends SystemOfUnits {
      * (at one atmosphere of pressure) is 0 Cel, while the boiling point is
      * 100 Cel.
      */
-    public static final Unit<Temperature> CELSIUS = si(KELVIN.plus(273.15));
+    public static final Unit<Temperature> CELSIUS = si(KELVIN.add(273.15));
 
     /**
      * The derived unit for luminous flux (<code>lm</code>).
@@ -368,7 +367,7 @@ public final class SI extends SystemOfUnits {
      * by a source of one candela intensity radiating equally in all directions.
      */
     public static final AlternateUnit<LuminousFlux> LUMEN = si(new AlternateUnit<LuminousFlux>(
-            "lm", CANDELA.times(STERADIAN)));
+            "lm", CANDELA.multiply(STERADIAN)));
 
     /**
      * The derived unit for illuminance (<code>lx</code>).
@@ -432,18 +431,18 @@ public final class SI extends SystemOfUnits {
      * The metric unit for area quantities (<code>m2</code>).
      */
     public static final Unit<Area> SQUARE_METRE = si(new ProductUnit<Area>(
-            METRE.times(METRE)));
+            METRE.multiply(METRE)));
 
     /**
      * The metric unit for volume quantities (<code>m3</code>).
      */
     public static final Unit<Volume> CUBIC_METRE = si(new ProductUnit<Volume>(
-            SQUARE_METRE.times(METRE)));
+            SQUARE_METRE.multiply(METRE)));
 
     /**
      * Equivalent to <code>KILO(METRE)</code>.
      */
-    public static final Unit<Length> KILOMETRE = METRE.times(1000);
+    public static final Unit<Length> KILOMETRE = METRE.multiply(1000);
 
     /**
      * Equivalent to <code>CENTI(METRE)</code>.

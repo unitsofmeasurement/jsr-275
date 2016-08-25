@@ -80,7 +80,6 @@
  */
 package javax.measure.unit;
 
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Quantity;
 
 /**
@@ -94,13 +93,13 @@ import javax.measure.quantity.Quantity;
  *     [/code]</p>
  *     
  * <p> Transformed units have no label. But like any other units,
- *     they may have labels attached to them (see {@link javax.measure.unit.format.SymbolMap
+ *     they may have labels attached to them (see {@link javax.measure.unit.SymbolMap
  *     SymbolMap}</p>
  *
  * <p> Instances of this class are created through the {@link Unit#transform} method.</p>
  *     
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.0.1 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  */
 public final class TransformedUnit<Q extends Quantity> extends DerivedUnit<Q> {
 

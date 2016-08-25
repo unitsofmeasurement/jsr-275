@@ -88,8 +88,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.measure.converter.LogConverter;
-import javax.measure.converter.RationalConverter;
 import javax.measure.quantity.*;
 
 /**
@@ -99,7 +97,7 @@ import javax.measure.quantity.*;
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.8 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.8 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  */
 public final class NonSI extends SystemOfUnits {
 
@@ -162,7 +160,7 @@ public final class NonSI extends SystemOfUnits {
      * A dimensionless unit equals to <code>pi</code> (standard name
      * <code>Ï€</code>).
      */
-    public static final Unit<Dimensionless> PI = nonSI(Unit.ONE.times(StrictMath.PI));
+    public static final Unit<Dimensionless> PI = nonSI(Unit.ONE.multiply(StrictMath.PI));
 
     /**
      * A dimensionless unit equals to <code>0.01</code> (standard name
@@ -193,7 +191,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of length equal to <code>0.3048 m</code> (standard name
      * <code>ft</code>).
      */
-    public static final Unit<Length> FOOT = nonSI(METRE.times(
+    public static final Unit<Length> FOOT = nonSI(METRE.multiply(
             INTERNATIONAL_FOOT_DIVIDEND).divide(INTERNATIONAL_FOOT_DIViSOR));
 
     /**
@@ -201,13 +199,13 @@ public final class NonSI extends SystemOfUnits {
      * <code>foot_survey_us</code>). See also: <a
      * href="http://www.sizes.com/units/foot.htm">foot</a>
      */
-    public static final Unit<Length> FOOT_SURVEY_US = nonSI(METRE.times(1200).divide(3937));
+    public static final Unit<Length> FOOT_SURVEY_US = nonSI(METRE.multiply(1200).divide(3937));
 
     /**
      * A unit of length equal to <code>0.9144 m</code> (standard name
      * <code>yd</code>).
      */
-    public static final Unit<Length> YARD = nonSI(FOOT.times(3));
+    public static final Unit<Length> YARD = nonSI(FOOT.multiply(3));
 
     /**
      * A unit of length equal to <code>0.0254 m</code> (standard name
@@ -219,14 +217,14 @@ public final class NonSI extends SystemOfUnits {
      * A unit of length equal to <code>1609.344 m</code> (standard name
      * <code>mi</code>).
      */
-    public static final Unit<Length> MILE = nonSI(METRE.times(1609344).divide(
+    public static final Unit<Length> MILE = nonSI(METRE.multiply(1609344).divide(
             1000));
 
     /**
      * A unit of length equal to <code>1852.0 m</code> (standard name
      * <code>nmi</code>).
      */
-    public static final Unit<Length> NAUTICAL_MILE = nonSI(METRE.times(1852));
+    public static final Unit<Length> NAUTICAL_MILE = nonSI(METRE.multiply(1852));
 
     /**
      * A unit of length equal to <code>1E-10 m</code> (standard name
@@ -238,13 +236,13 @@ public final class NonSI extends SystemOfUnits {
      * A unit of length equal to the average distance from the center of the
      * Earth to the center of the Sun (standard name <code>ua</code>).
      */
-    public static final Unit<Length> ASTRONOMICAL_UNIT = nonSI(METRE.times(149597870691.0));
+    public static final Unit<Length> ASTRONOMICAL_UNIT = nonSI(METRE.multiply(149597870691.0));
 
     /**
      * A unit of length equal to the distance that light travels in one year
      * through a vacuum (standard name <code>ly</code>).
      */
-    public static final Unit<Length> LIGHT_YEAR = nonSI(METRE.times(9.460528405e15));
+    public static final Unit<Length> LIGHT_YEAR = nonSI(METRE.multiply(9.460528405e15));
 
     /**
      * A unit of length equal to the distance at which a star would appear to
@@ -253,7 +251,7 @@ public final class NonSI extends SystemOfUnits {
      * in the direction perpendicular to the direction to the star (standard
      * name <code>pc</code>).
      */
-    public static final Unit<Length> PARSEC = nonSI(METRE.times(30856770e9));
+    public static final Unit<Length> PARSEC = nonSI(METRE.multiply(30856770e9));
 
     /**
      * A unit of length equal to <code>0.013837 {@link #INCH}</code> exactly (standard name
@@ -261,7 +259,7 @@ public final class NonSI extends SystemOfUnits {
      *
      * @see #PIXEL
      */
-    public static final Unit<Length> POINT = nonSI(INCH.times(13837).divide(
+    public static final Unit<Length> POINT = nonSI(INCH.multiply(13837).divide(
             1000000));
 
     /**
@@ -284,17 +282,17 @@ public final class NonSI extends SystemOfUnits {
      * A unit of duration equal to <code>60 s</code> (standard name
      * <code>min</code>).
      */
-    public static final Unit<Duration> MINUTE = nonSI(SI.SECOND.times(60));
+    public static final Unit<Duration> MINUTE = nonSI(SI.SECOND.multiply(60));
 
     /**
      * A unit of duration equal to <code>60 {@link #MINUTE}</code> (standard name <code>h</code>).
      */
-    public static final Unit<Duration> HOUR = nonSI(MINUTE.times(60));
+    public static final Unit<Duration> HOUR = nonSI(MINUTE.multiply(60));
 
     /**
      * A unit of duration equal to <code>24 {@link #HOUR}</code> (standard name <code>d</code>).
      */
-    public static final Unit<Duration> DAY = nonSI(HOUR.times(24));
+    public static final Unit<Duration> DAY = nonSI(HOUR.multiply(24));
 
     /**
      * A unit of duration equal to the time required for a complete rotation of
@@ -302,26 +300,26 @@ public final class NonSI extends SystemOfUnits {
      * meridian, equal to 23 hours, 56 minutes, 4.09 seconds (standard name
      * <code>day_sidereal</code>).
      */
-    public static final Unit<Duration> DAY_SIDEREAL = nonSI(SECOND.times(86164.09));
+    public static final Unit<Duration> DAY_SIDEREAL = nonSI(SECOND.multiply(86164.09));
 
     /**
      * A unit of duration equal to 7 {@link #DAY} (standard name
      * <code>week</code>).
      */
-    public static final Unit<Duration> WEEK = nonSI(DAY.times(7));
+    public static final Unit<Duration> WEEK = nonSI(DAY.multiply(7));
 
     /**
      * A unit of duration equal to 365 {@link #DAY} (standard name
      * <code>year</code>).
      */
-    public static final Unit<Duration> YEAR_CALENDAR = nonSI(DAY.times(365));
+    public static final Unit<Duration> YEAR_CALENDAR = nonSI(DAY.multiply(365));
 
     /**
      * A unit of duration equal to one complete revolution of the earth about
      * the sun, relative to the fixed stars, or 365 days, 6 hours, 9 minutes,
      * 9.54 seconds (standard name <code>year_sidereal</code>).
      */
-    public static final Unit<Duration> YEAR_SIDEREAL = nonSI(SECOND.times(31558149.54));
+    public static final Unit<Duration> YEAR_SIDEREAL = nonSI(SECOND.multiply(31558149.54));
 
     /**
      * The Julian year, as used in astronomy and other sciences, is a time unit
@@ -329,7 +327,7 @@ public final class NonSI extends SystemOfUnits {
      * "year" (symbol "a" from the Latin annus, annata) used in various
      * scientific contexts.
      */
-    public static final Unit<Duration> YEAR_JULIEN = nonSI(SECOND.times(31557600));
+    public static final Unit<Duration> YEAR_JULIEN = nonSI(SECOND.multiply(31557600));
 
     // ////////
     // Mass //
@@ -338,19 +336,19 @@ public final class NonSI extends SystemOfUnits {
      * A unit of mass equal to 1/12 the mass of the carbon-12 atom (standard
      * name <code>u</code>).
      */
-    public static final Unit<Mass> ATOMIC_MASS = nonSI(KILOGRAM.times(1e-3 / AVOGADRO_CONSTANT));
+    public static final Unit<Mass> ATOMIC_MASS = nonSI(KILOGRAM.multiply(1e-3 / AVOGADRO_CONSTANT));
 
     /**
      * A unit of mass equal to the mass of the electron (standard name
      * <code>me</code>).
      */
-    public static final Unit<Mass> ELECTRON_MASS = nonSI(KILOGRAM.times(9.10938188e-31));
+    public static final Unit<Mass> ELECTRON_MASS = nonSI(KILOGRAM.multiply(9.10938188e-31));
 
     /**
      * A unit of mass equal to <code>453.59237 grams</code> (avoirdupois pound,
      * standard name <code>lb</code>).
      */
-    public static final Unit<Mass> POUND = nonSI(KILOGRAM.times(
+    public static final Unit<Mass> POUND = nonSI(KILOGRAM.multiply(
             AVOIRDUPOIS_POUND_DIVIDEND).divide(AVOIRDUPOIS_POUND_DIVISOR));
 
     /**
@@ -362,19 +360,19 @@ public final class NonSI extends SystemOfUnits {
      * A unit of mass equal to <code>2000 {@link #POUND}</code> (short ton, standard name
      * <code>ton_us</code>).
      */
-    public static final Unit<Mass> TON_US = nonSI(POUND.times(2000));
+    public static final Unit<Mass> TON_US = nonSI(POUND.multiply(2000));
 
     /**
      * A unit of mass equal to <code>2240 {@link #POUND}</code> (long ton, standard name
      * <code>ton_uk</code>).
      */
-    public static final Unit<Mass> TON_UK = nonSI(POUND.times(2240));
+    public static final Unit<Mass> TON_UK = nonSI(POUND.multiply(2240));
 
     /**
      * A unit of mass equal to <code>1000 kg</code> (metric ton, standard name
      * <code>t</code>).
      */
-    public static final Unit<Mass> METRIC_TON = nonSI(KILOGRAM.times(1000));
+    public static final Unit<Mass> METRIC_TON = nonSI(KILOGRAM.multiply(1000));
 
     // ///////////////////
     // Electric charge //
@@ -383,20 +381,20 @@ public final class NonSI extends SystemOfUnits {
      * A unit of electric charge equal to the charge on one electron (standard
      * name <code>e</code>).
      */
-    public static final Unit<ElectricCharge> E = nonSI(COULOMB.times(ELEMENTARY_CHARGE));
+    public static final Unit<ElectricCharge> E = nonSI(COULOMB.multiply(ELEMENTARY_CHARGE));
 
     /**
      * A unit of electric charge equal to equal to the product of Avogadro's
      * number (see {@link SI#MOLE}) and the charge (1 e) on a single electron
      * (standard name <code>Fd</code>).
      */
-    public static final Unit<ElectricCharge> FARADAY = nonSI(COULOMB.times(ELEMENTARY_CHARGE * AVOGADRO_CONSTANT)); // e/mol
+    public static final Unit<ElectricCharge> FARADAY = nonSI(COULOMB.multiply(ELEMENTARY_CHARGE * AVOGADRO_CONSTANT)); // e/mol
 
     /**
      * A unit of electric charge which exerts a force of one dyne on an equal
      * charge at a distance of one centimeter (standard name <code>Fr</code>).
      */
-    public static final Unit<ElectricCharge> FRANKLIN = nonSI(COULOMB.times(3.3356e-10));
+    public static final Unit<ElectricCharge> FRANKLIN = nonSI(COULOMB.multiply(3.3356e-10));
 
     // ///////////////
     // Temperature //
@@ -405,7 +403,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of temperature equal to <code>5/9 Â°K</code> (standard name
      * <code>Â°R</code>).
      */
-    public static final Unit<Temperature> RANKINE = nonSI(KELVIN.times(5).divide(9));
+    public static final Unit<Temperature> RANKINE = nonSI(KELVIN.multiply(5).divide(9));
 
     /**
      * A unit of temperature equal to degree Rankine minus
@@ -413,7 +411,7 @@ public final class NonSI extends SystemOfUnits {
      *
      * @see #RANKINE
      */
-    public static final Unit<Temperature> FAHRENHEIT = nonSI(RANKINE.plus(459.67));
+    public static final Unit<Temperature> FAHRENHEIT = nonSI(RANKINE.add(459.67));
 
     // /////////
     // Angle //
@@ -422,7 +420,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of angle equal to a full circle or <code>2<i>&pi;</i>
      * {@link SI#RADIAN}</code> (standard name <code>rev</code>).
      */
-    public static final Unit<Angle> REVOLUTION = nonSI(RADIAN.times(2).times(PI).asType(Angle.class));
+    public static final Unit<Angle> REVOLUTION = nonSI(RADIAN.multiply(2).multiply(PI).asType(Angle.class));
 
     /**
      * A unit of angle equal to <code>1/360 {@link #REVOLUTION}</code> (standard name <code>deg</code>).
@@ -486,7 +484,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of velocity relative to the speed of light (standard name
      * <code>c</code>).
      */
-    public static final Unit<Velocity> C = nonSI(METRES_PER_SECOND.times(299792458));
+    public static final Unit<Velocity> C = nonSI(METRES_PER_SECOND.multiply(299792458));
 
     // ////////////////
     // Acceleration //
@@ -495,7 +493,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of acceleration equal to the gravity at the earth's surface
      * (standard name <code>grav</code>).
      */
-    public static final Unit<Acceleration> G = nonSI(METRES_PER_SQUARE_SECOND.times(STANDARD_GRAVITY_DIVIDEND).divide(STANDARD_GRAVITY_DIVISOR));
+    public static final Unit<Acceleration> G = nonSI(METRES_PER_SQUARE_SECOND.multiply(STANDARD_GRAVITY_DIVIDEND).divide(STANDARD_GRAVITY_DIVISOR));
 
     // ////////
     // Area //
@@ -504,12 +502,12 @@ public final class NonSI extends SystemOfUnits {
      * A unit of area equal to <code>100 mÂ²</code> (standard name <code>a</code>
      * ).
      */
-    public static final Unit<Area> ARE = nonSI(SQUARE_METRE.times(100));
+    public static final Unit<Area> ARE = nonSI(SQUARE_METRE.multiply(100));
 
     /**
      * A unit of area equal to <code>100 {@link #ARE}</code> (standard name <code>ha</code>).
      */
-    public static final Unit<Area> HECTARE = nonSI(ARE.times(100)); // Exact.
+    public static final Unit<Area> HECTARE = nonSI(ARE.multiply(100)); // Exact.
 
     // ///////////////
     // Data Amount //
@@ -518,7 +516,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of data amount equal to <code>8 {@link SI#BIT}</code> (BinarY TErm, standard name
      * <code>byte</code>).
      */
-    public static final Unit<DataAmount> BYTE = nonSI(BIT.times(8));
+    public static final Unit<DataAmount> BYTE = nonSI(BIT.multiply(8));
 
     /**
      * Equivalent {@link #BYTE}
@@ -533,8 +531,8 @@ public final class NonSI extends SystemOfUnits {
      * electromagnetic unit of magnetomotive force, equal to <code>10/4
      * &pi;ampere-turn</code> (standard name <code>Gi</code>).
      */
-    public static final Unit<ElectricCurrent> GILBERT = nonSI(SI.AMPERE.times(
-            10).divide(4).times(PI).asType(ElectricCurrent.class));
+    public static final Unit<ElectricCurrent> GILBERT = nonSI(SI.AMPERE.multiply(
+            10).divide(4).multiply(PI).asType(ElectricCurrent.class));
 
     // //////////
     // Energy //
@@ -549,7 +547,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of energy equal to one electron-volt (standard name
      * <code>eV</code>, also recognized <code>keV, MeV, GeV</code>).
      */
-    public static final Unit<Energy> ELECTRON_VOLT = nonSI(JOULE.times(ELEMENTARY_CHARGE));
+    public static final Unit<Energy> ELECTRON_VOLT = nonSI(JOULE.multiply(ELEMENTARY_CHARGE));
 
     // ///////////////
     // Illuminance //
@@ -558,7 +556,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of illuminance equal to <code>1E4 Lx</code> (standard name
      * <code>La</code>).
      */
-    public static final Unit<Illuminance> LAMBERT = nonSI(LUX.times(10000));
+    public static final Unit<Illuminance> LAMBERT = nonSI(LUX.multiply(10000));
 
     // /////////////////
     // Magnetic Flux //
@@ -591,13 +589,13 @@ public final class NonSI extends SystemOfUnits {
      * A unit of force equal to <code>9.80665 N</code> (standard name
      * <code>kgf</code>).
      */
-    public static final Unit<Force> KILOGRAM_FORCE = nonSI(NEWTON.times(
+    public static final Unit<Force> KILOGRAM_FORCE = nonSI(NEWTON.multiply(
             STANDARD_GRAVITY_DIVIDEND).divide(STANDARD_GRAVITY_DIVISOR));
 
     /**
      * A unit of force equal to <code>{@link #POUND}Â·{@link #G}</code> (standard name <code>lbf</code>).
      */
-    public static final Unit<Force> POUND_FORCE = nonSI(NEWTON.times(
+    public static final Unit<Force> POUND_FORCE = nonSI(NEWTON.multiply(
             1L * AVOIRDUPOIS_POUND_DIVIDEND * STANDARD_GRAVITY_DIVIDEND).divide(1L * AVOIRDUPOIS_POUND_DIVISOR * STANDARD_GRAVITY_DIVISOR));
 
     // /////////
@@ -608,7 +606,7 @@ public final class NonSI extends SystemOfUnits {
      * kilograms at a velocity of 1 meter per second (metric, standard name
      * <code>hp</code>).
      */
-    public static final Unit<Power> HORSEPOWER = nonSI(WATT.times(735.499));
+    public static final Unit<Power> HORSEPOWER = nonSI(WATT.multiply(735.499));
 
     // ////////////
     // Pressure //
@@ -617,26 +615,26 @@ public final class NonSI extends SystemOfUnits {
      * A unit of pressure equal to the average pressure of the Earth's
      * atmosphere at sea level (standard name <code>atm</code>).
      */
-    public static final Unit<Pressure> ATMOSPHERE = nonSI(PASCAL.times(101325));
+    public static final Unit<Pressure> ATMOSPHERE = nonSI(PASCAL.multiply(101325));
 
     /**
      * A unit of pressure equal to <code>100 kPa</code> (standard name
      * <code>bar</code>).
      */
-    public static final Unit<Pressure> BAR = nonSI(PASCAL.times(100000));
+    public static final Unit<Pressure> BAR = nonSI(PASCAL.multiply(100000));
 
     /**
      * A unit of pressure equal to the pressure exerted at the Earth's surface
      * by a column of mercury 1 millimeter high (standard name <code>mmHg</code>
      * ).
      */
-    public static final Unit<Pressure> MILLIMETRE_OF_MERCURY = nonSI(PASCAL.times(133.322));
+    public static final Unit<Pressure> MILLIMETRE_OF_MERCURY = nonSI(PASCAL.multiply(133.322));
 
     /**
      * A unit of pressure equal to the pressure exerted at the Earth's surface
      * by a column of mercury 1 inch high (standard name <code>inHg</code>).
      */
-    public static final Unit<Pressure> INCH_OF_MERCURY = nonSI(PASCAL.times(3386.388));
+    public static final Unit<Pressure> INCH_OF_MERCURY = nonSI(PASCAL.multiply(3386.388));
 
     // ///////////////////////////
     // Radiation dose absorbed //
@@ -660,13 +658,13 @@ public final class NonSI extends SystemOfUnits {
      * A unit of radioctive activity equal to the activity of a gram of radium
      * (standard name <code>Ci</code>).
      */
-    public static final Unit<RadioactiveActivity> CURIE = nonSI(BECQUEREL.times(37000000000L));
+    public static final Unit<RadioactiveActivity> CURIE = nonSI(BECQUEREL.multiply(37000000000L));
 
     /**
      * A unit of radioctive activity equal to 1 million radioactive
      * disintegrations per second (standard name <code>Rd</code>).
      */
-    public static final Unit<RadioactiveActivity> RUTHERFORD = nonSI(SI.BECQUEREL.times(1000000));
+    public static final Unit<RadioactiveActivity> RUTHERFORD = nonSI(SI.BECQUEREL.multiply(1000000));
 
     // ///////////////
     // Solid angle //
@@ -675,7 +673,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit of solid angle equal to <code>4 <i>&pi;</i> steradians</code>
      * (standard name <code>sphere</code>).
      */
-    public static final Unit<SolidAngle> SPHERE = nonSI(STERADIAN.times(4).times(PI).asType(SolidAngle.class));
+    public static final Unit<SolidAngle> SPHERE = nonSI(STERADIAN.multiply(4).multiply(PI).asType(SolidAngle.class));
 
     // //////////
     // Volume //
@@ -697,7 +695,7 @@ public final class NonSI extends SystemOfUnits {
      * gallon is based on the Queen Anne or Wine gallon occupying 231 cubic
      * inches (standard name <code>gal</code>).
      */
-    public static final Unit<Volume> GALLON_LIQUID_US = nonSI(CUBIC_INCH.times(231));
+    public static final Unit<Volume> GALLON_LIQUID_US = nonSI(CUBIC_INCH.multiply(231));
 
     /**
      * A unit of volume equal to <code>1 / 128 {@link #GALLON_LIQUID_US}</code> (standard name
@@ -709,13 +707,13 @@ public final class NonSI extends SystemOfUnits {
      * A unit of volume equal to one US dry gallon. (standard name
      * <code>gallon_dry_us</code>).
      */
-    public static final Unit<Volume> GALLON_DRY_US = nonSI(CUBIC_INCH.times(
+    public static final Unit<Volume> GALLON_DRY_US = nonSI(CUBIC_INCH.multiply(
             2688025).divide(10000));
 
     /**
      * A unit of volume equal to <code>4.546 09 {@link #LITRE}</code> (standard name <code>gal_uk</code>).
      */
-    public static final Unit<Volume> GALLON_UK = nonSI(LITRE.times(454609).divide(100000));
+    public static final Unit<Volume> GALLON_UK = nonSI(LITRE.multiply(454609).divide(100000));
 
     /**
      * A unit of volume equal to <code>1 / 160 {@link #GALLON_UK}</code> (standard name
@@ -729,7 +727,7 @@ public final class NonSI extends SystemOfUnits {
     /**
      * A unit of dynamic viscosity equal to <code>1 g/(cmÂ·s)</code> (cgs unit).
      */
-    public static final Unit<DynamicViscosity> POISE = nonSI(GRAM.divide(CENTI(METRE).times(SECOND))).asType(DynamicViscosity.class);
+    public static final Unit<DynamicViscosity> POISE = nonSI(GRAM.divide(CENTI(METRE).multiply(SECOND))).asType(DynamicViscosity.class);
 
     /**
      * A unit of kinematic viscosity equal to <code>1 cm²/s</code> (cgs unit).
@@ -752,7 +750,7 @@ public final class NonSI extends SystemOfUnits {
      * A unit used to measure the ionizing ability of radiation (standard name
      * <code>Roentgen</code>).
      */
-    public static final Unit<?> ROENTGEN = nonSI(COULOMB.divide(KILOGRAM).times(2.58e-4));
+    public static final Unit<?> ROENTGEN = nonSI(COULOMB.divide(KILOGRAM).multiply(2.58e-4));
 
     // ///////////////////
     // Collection View //
@@ -797,7 +795,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1024)</code>.
          */
         public static <Q extends Quantity> Unit<Q> KIBI(Unit<Q> unit) {
-            return unit.times(1024);
+            return unit.multiply(1024);
         }
 
         /**
@@ -808,7 +806,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1048576)</code>.
          */
         public static <Q extends Quantity> Unit<Q> MEBI(Unit<Q> unit) {
-            return unit.times(1048576);
+            return unit.multiply(1048576);
         }
 
         /**
@@ -819,7 +817,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1073741824)</code>.
          */
         public static final <Q extends Quantity> Unit<Q> GIBI(Unit<Q> unit) {
-            return unit.times(1073741824);
+            return unit.multiply(1073741824);
         }
 
         /**
@@ -830,7 +828,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1099511627776L)</code>.
          */
         public static <Q extends Quantity> Unit<Q> TEBI(Unit<Q> unit) {
-            return unit.times(1099511627776L);
+            return unit.multiply(1099511627776L);
         }
 
         /**
@@ -841,7 +839,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1125899906842624L)</code>.
          */
         public static <Q extends Quantity> Unit<Q> PEBI(Unit<Q> unit) {
-            return unit.times(1125899906842624L);
+            return unit.multiply(1125899906842624L);
         }
 
         /**
@@ -852,7 +850,7 @@ public final class NonSI extends SystemOfUnits {
          * @return <code>unit.times(1152921504606846976L)</code>.
          */
         public static <Q extends Quantity> Unit<Q> EXBI(Unit<Q> unit) {
-            return unit.times(1152921504606846976L);
+            return unit.multiply(1152921504606846976L);
         }
     }
 

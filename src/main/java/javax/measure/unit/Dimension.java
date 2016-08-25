@@ -82,7 +82,7 @@ package javax.measure.unit;
 
 import java.io.Serializable;
 
-import javax.measure.converter.UnitConverter;
+import javax.measure.unit.UnitConverter;
 import javax.measure.quantity.Dimensionless;
 
 /**
@@ -96,9 +96,9 @@ import javax.measure.quantity.Dimensionless;
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
  * 
- * @version 1.0.3 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
- * @see <a href="http://en.wikipedia.org/wiki/Dimensional_analysis">
- *      Wikipedia: Dimensional Analysis</a>
+ * @version 1.0.3 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
+ * @see <a href="http://www.bipm.org/en/si/si_brochure/chapter1/1-3.html">
+ *      BIPM: SI Brochure Chapter 1.3</a>
  */
 public final class Dimension implements Serializable {
 
@@ -138,9 +138,9 @@ public final class Dimension implements Serializable {
     public static final Dimension ELECTRIC_CURRENT = new Dimension('I');
 
     /**
-     * Holds temperature dimension (Q).
+     * Holds temperature dimension (Θ).
      */
-    public static final Dimension TEMPERATURE = new Dimension('Q');
+    public static final Dimension TEMPERATURE = new Dimension('Θ');
 
     /**
      * Holds amount of substance dimension (N).
@@ -162,7 +162,7 @@ public final class Dimension implements Serializable {
      * 
      * @param symbol the associated symbol.
      */
-    public Dimension(char symbol) {
+    private Dimension(char symbol) {
         pseudoUnit = new BaseUnit<Dimensionless>("[" + symbol + "]");
     }
 
@@ -182,8 +182,8 @@ public final class Dimension implements Serializable {
      * @param  that the dimension multiplicand.
      * @return <code>this * that</code>
      */
-    public final Dimension times(Dimension that) {
-        return new Dimension(this.pseudoUnit.times(that.pseudoUnit));
+    public final Dimension multiply(Dimension that) {
+        return new Dimension(this.pseudoUnit.multiply(that.pseudoUnit));
     }
 
     /**

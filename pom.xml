@@ -6,7 +6,7 @@
             https://kenai.com/projects/jsr-275
      ======================================================================= -->
 
-<!-- $Id: pom.xml 76 2009-12-03 22:53:52Z keilw $ -->
+<!-- $Id: pom.xml 87 2010-01-31 21:44:57Z keilw $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -24,8 +24,7 @@
   <!-- ==================================================== -->
     <groupId>javax.measure</groupId>
     <artifactId>jsr-275</artifactId>
-    <packaging>jar</packaging>
-    <version>0.9.4</version>
+    <version>0.9.5-SNAPSHOT</version>
     <name>JSR-275</name>
     <url>https://kenai.com/projects/jsr-275</url>
 
@@ -61,6 +60,10 @@
         <system>JIRA</system>
         <url>http://kenai.com/jira/browse/JSR_275</url>
     </issueManagement>
+    <ciManagement>
+    	<system>Hudson</system>
+    	<url>http://hudson.geomatys.com/job/JSR-275/</url>
+    </ciManagement>
 
     <mailingLists>
         <mailingList>
@@ -84,8 +87,8 @@
             <timezone>+1</timezone>
             <roles>
                 <role>Spec Lead</role>
-                <role>Java Developer</role>
                 <role>Architect</role>
+                <role>Java Developer</role>
             </roles>
         </developer>
         <developer>
@@ -337,12 +340,16 @@
                 <version>2.2</version>
                 <configuration>
                     <archive>
+                    	<compress>true</compress>
                         <manifestEntries>
-                            <Implementation-Title>${project.name}</Implementation-Title>
+                        	<Bundle-Version>${project.version}</Bundle-Version>
+                        	<Bundle-Name>${project.name}</Bundle-Name>
+                        	<Bundle-Vendor>${project.organization.name}</Bundle-Vendor>
+                            <Implementation-Title>${project.organization.name}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
 	            			<!-- mode>development</mode> TODO call it stage?              
 	            			<SCM-Revision>${buildNumber}</SCM-Revision-->
-                            <SCM-Revision>$Revision: 76 $</SCM-Revision>
+                            <SCM-Revision>$Revision: 87 $</SCM-Revision>
                         </manifestEntries>
                         <manifestFile>src/main/java/META-INF/MANIFEST.MF</manifestFile>
                     </archive>

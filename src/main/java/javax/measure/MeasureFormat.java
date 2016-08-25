@@ -102,7 +102,7 @@ import javax.measure.unit.UnitFormat;
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.1 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.0.1 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  */
 public abstract class MeasureFormat extends Format {
 
@@ -348,7 +348,7 @@ public abstract class MeasureFormat extends Format {
 				if (measure.getUnit().equals(Unit.ONE))
 					return dest;
 				dest.append(' ');
-				return UnitFormat.getStandard().format(unit, dest);
+				return UnitFormat.getInstance().format(unit, dest);
 			}
 		}
 
@@ -369,7 +369,7 @@ public abstract class MeasureFormat extends Format {
 			BigDecimal decimal = new BigDecimal(csq.subSequence(startDecimal,
 					endDecimal).toString());
 			cursor.setIndex(endDecimal + 1);
-			Unit unit = UnitFormat.getStandard().parse(csq, cursor);
+			Unit unit = UnitFormat.getInstance().parse(csq, cursor);
 			return Measure.valueOf(decimal, unit);
 		}
 	}

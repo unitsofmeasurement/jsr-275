@@ -127,9 +127,9 @@ import javax.measure.unit.Unit;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.3 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.0.4 ($Revision: 96 $), $Date: 2010-02-03 19:21:17 +0100 (Mi, 03 Feb 2010) $
  */
-public interface Measurable<Q extends Quantity> extends Comparable<Measurable<Q>> {
+interface Measurable<Q extends Quantity> extends Comparable<Measurable<Q>> {
 
     /**
      * Returns the integral <code>int</code> value of this measurable when

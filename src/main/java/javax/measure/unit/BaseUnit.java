@@ -80,7 +80,6 @@
  */
 package javax.measure.unit;
 
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Quantity;
 
 /**
@@ -96,7 +95,7 @@ import javax.measure.quantity.Quantity;
  *     the base units of a specific {@link SystemOfUnits}.</p>
  *           
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.0.1 ($Revision: 89 $), $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/SI_base_unit">
  *       Wikipedia: SI base unit</a>
  */
@@ -105,7 +104,7 @@ public class BaseUnit<Q extends Quantity> extends Unit<Q> {
     /**
      * Holds the symbol.
      */
-    private final String _symbol;
+    private final String symbol;
 
     /**
      * Creates a base unit having the specified symbol. 
@@ -115,7 +114,7 @@ public class BaseUnit<Q extends Quantity> extends Unit<Q> {
      *         associated to a different unit.
      */
     public BaseUnit(String symbol) {
-        _symbol = symbol;
+        this.symbol = symbol;
         // Checks if the symbol is associated to a different unit.
         synchronized (Unit.SYMBOL_TO_UNIT) {
             Unit<?> unit = Unit.SYMBOL_TO_UNIT.get(symbol);
@@ -134,7 +133,7 @@ public class BaseUnit<Q extends Quantity> extends Unit<Q> {
      * @return this base unit symbol.
      */
     public String getSymbol() {
-        return _symbol;
+        return symbol;
     }
 
     @Override
@@ -144,12 +143,12 @@ public class BaseUnit<Q extends Quantity> extends Unit<Q> {
         if (!(that instanceof BaseUnit<?>))
             return false;
         BaseUnit<?> thatUnit = (BaseUnit<?>) that;
-        return this._symbol.equals(thatUnit._symbol);
+        return this.symbol.equals(thatUnit.symbol);
     }
 
     @Override
     public int hashCode() {
-        return _symbol.hashCode();
+        return symbol.hashCode();
     }
 
     @Override
@@ -162,5 +161,16 @@ public class BaseUnit<Q extends Quantity> extends Unit<Q> {
         return UnitConverter.IDENTITY;
     }
 
+    @Override
+    public Dimension getDimension() {
+        return Dimension.getModel().getDimension(this);
+    }
+
+    @Override
+    public UnitConverter getDimensionalTransform() {
+        return Dimension.getModel().getTransform(this);
+    }
+
     private static final long serialVersionUID = 1L;
+
 }

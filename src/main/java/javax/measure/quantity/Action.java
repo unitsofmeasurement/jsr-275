@@ -98,6 +98,6 @@ public interface Action extends Quantity {
     /**
      * Holds the SI unit (Système International d'Unités) for this quantity.
      */
-    public final static Unit<Action> UNIT = new ProductUnit<Action>(SI.JOULE.times(SI.SECOND));
+    public final static Unit<Action> UNIT = new ProductUnit<Action>(SI.JOULE.multiply(SI.SECOND));
 
 }

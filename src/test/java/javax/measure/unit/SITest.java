@@ -80,14 +80,14 @@
  */
 package javax.measure.unit;
 
-import static javax.measure.unit.format.TestUtil.print;
+import static javax.measure.util.TestUtil.print;
 
 import junit.framework.TestCase;
 
 /**
  * Unit test for class javax.measure.unit.SI
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.2 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.0.2 ($Revision: 92 $), $Date: 2010-01-31 23:16:07 +0100 (So, 31 Jän 2010) $
  */
 public class SITest extends TestCase {
     
@@ -113,7 +113,8 @@ public class SITest extends TestCase {
      */
     public void testGetInstance() {
     	
-        print("getInstance" + NonSI.GALLON_UK.divide(8) + " ?");
+        print("getInstance: " + NonSI.GALLON_UK.divide(8) + " (" +
+        		NonSI.GALLON_UK.divide(8).getDimension().toString() + ")");
         SI result = SI.getInstance();
       
         // Checks SI contains the 7 SI base units.
@@ -124,6 +125,8 @@ public class SITest extends TestCase {
         assertTrue(result.getUnits().contains(Unit.valueOf("K")));
         assertTrue(result.getUnits().contains(Unit.valueOf("cd")));
         assertTrue(result.getUnits().contains(Unit.valueOf("A")));
+        
+        print(Unit.valueOf("m").getDimension().toString());
     }
 
   

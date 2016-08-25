@@ -85,12 +85,6 @@ import java.math.BigInteger;
 import java.text.ParsePosition;
 import java.util.HashMap;
 
-import javax.measure.converter.AddConverter;
-import javax.measure.converter.ConversionException;
-import javax.measure.converter.LinearConverter;
-import javax.measure.converter.MultiplyConverter;
-import javax.measure.converter.RationalConverter;
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Quantity;
 
@@ -127,7 +121,7 @@ import javax.measure.quantity.Quantity;
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author <a href="mailto:steve@unidata.ucar.edu">Steve Emmerson</a>
  * @author Martin Desruisseaux
- * @version 1.0, April 15, 2009
+ * @version 1.1, $Date: 2010-02-03 19:21:17 +0100 (Mi, 03 Feb 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/Units_of_measurement"> Wikipedia:
  * Units of measurement</a>
  */
@@ -210,7 +204,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      *
      * @return <code>this.toSI().equals(this)</code>
      */
-    public boolean isSI() {
+    boolean isSI() {
         return toSI().equals(this);
     }
 
@@ -263,25 +257,36 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
 
     /**
      * Returns the dimension of this unit (depends upon the current dimensional
-     * {@link Dimension.Model model}).
+     * {@link Dimension.Model model}). Custom system units should override
+     * this method.
      *
      * @return the dimension of this unit for the current model.
+     * @throws UnsupportedOperationException if this unit is a SI unit
+     *         and does not override this method.
      */
-    public final Dimension getDimension() {
-        Unit<?> systemUnit = this.toSI();
-        if (systemUnit instanceof BaseUnit<?>)
-            return Dimension.Model.STANDARD.getDimension((BaseUnit<?>) systemUnit);
-        if (systemUnit instanceof AlternateUnit<?>)
-            return ((AlternateUnit<?>) systemUnit).getParent().getDimension();
-        // Product of units.
-        ProductUnit<?> productUnit = (ProductUnit<?>) systemUnit;
-        Dimension dimension = Dimension.NONE;
-        for (int i = 0; i < productUnit.getUnitCount(); i++) {
-            Unit<?> unit = productUnit.getUnit(i);
-            Dimension d = unit.getDimension().pow(productUnit.getUnitPow(i)).root(productUnit.getUnitRoot(i));
-            dimension = dimension.times(d);
-        }
-        return dimension;
+    public Dimension getDimension() {
+        if (!isSI()) 
+            return this.toSI().getDimension();
+        throw new UnsupportedOperationException(
+                "Custom unit of type " + this.getClass() + " should override Unit.getDimension()");
+    }
+
+    /**
+     * Returns the intrinsic dimensional transform of this unit
+     * (depends upon the current {@link Dimension.Model model} for
+     * {@link BaseUnit} instance). Custom system units should override this
+     * method.
+     *
+     * @return the intrinsic transformation of this unit relatively to its
+     *         dimension.
+     * @throws UnsupportedOperationException if this unit is a SI unit
+     *         and does not override this method.
+     */
+    public UnitConverter getDimensionalTransform() {
+        if (!isSI())
+            return this.getConverterToSI().concatenate(this.toSI().getDimensionalTransform());
+        throw new UnsupportedOperationException(
+                "Custom unit of type " + this.getClass() + " should override Unit.getDimensionalTransform()");
     }
 
     /**
@@ -317,7 +322,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * @throws UnsupportedOperationException if the converter cannot be
      *         constructed.
      */
-    public final UnitConverter getConverterToAny(Unit<?> that)
+    public UnitConverter getConverterToAny(Unit<?> that)
             throws ConversionException, UnsupportedOperationException {
         return ((this == that) || this.equals(that)) ? UnitConverter.IDENTITY
                 : searchConverterTo(that);
@@ -325,65 +330,21 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
 
     private UnitConverter searchConverterTo(Unit<?> that)
             throws ConversionException {
+        // First we have find a common dimension to convert to.
+
+        // Try the SI unit.
         Unit<Q> thisSI = this.toSI();
         Unit<?> thatSI = that.toSI();
         if (thisSI.equals(thatSI))
             return that.getConverterToSI().inverse().concatenate(
                     this.getConverterToSI());
-        // Use dimensional transforms.
+        
+        // Use dimensional unit.
         if (!thisSI.getDimension().equals(thatSI.getDimension()))
             throw new ConversionException(this + " is not compatible with " + that);
-        // Transform between SystemUnit and BaseUnits is Identity.
-        UnitConverter thisTransform = this.getConverterToSI().concatenate(
-                transformOf(this.toBaseUnits()));
-        UnitConverter thatTransform = that.getConverterToSI().concatenate(
-                transformOf(that.toBaseUnits()));
+        UnitConverter thisTransform = thisSI.getDimensionalTransform().concatenate(this.getConverterToSI());
+        UnitConverter thatTransform = thatSI.getDimensionalTransform().concatenate(that.getConverterToSI());
         return thatTransform.inverse().concatenate(thisTransform);
-    }
-
-    private Unit<?> toBaseUnits() {
-        Unit<?> systemUnit = this.toSI();
-        if (systemUnit instanceof BaseUnit<?>)
-            return systemUnit;
-        if (systemUnit instanceof AlternateUnit<?>)
-            return ((AlternateUnit<?>) systemUnit).getParent().toBaseUnits();
-        if (systemUnit instanceof ProductUnit<?>) {
-            ProductUnit<?> productUnit = (ProductUnit<?>) systemUnit;
-            Unit<?> baseUnits = ONE;
-            for (int i = 0; i < productUnit.getUnitCount(); i++) {
-                Unit<?> unit = productUnit.getUnit(i).toBaseUnits();
-                unit = unit.pow(productUnit.getUnitPow(i));
-                unit = unit.root(productUnit.getUnitRoot(i));
-                baseUnits = baseUnits.times(unit);
-            }
-            return baseUnits;
-        } else
-            throw new UnsupportedOperationException("System Unit cannot be an instance of " + this.getClass());
-    }
-
-    private static UnitConverter transformOf(Unit<?> baseUnits) throws UnsupportedOperationException {
-        if (baseUnits instanceof BaseUnit<?>)
-            return Dimension.Model.STANDARD.getTransform((BaseUnit<?>) baseUnits);
-        // Product of units.
-        ProductUnit<?> productUnit = (ProductUnit<?>) baseUnits;
-        UnitConverter converter = UnitConverter.IDENTITY;
-        for (int i = 0; i < productUnit.getUnitCount(); i++) {
-            Unit<?> unit = productUnit.getUnit(i);
-            UnitConverter cvtr = transformOf(unit);
-            if (!(cvtr instanceof LinearConverter))
-                throw new UnsupportedOperationException(baseUnits + " is non-linear, cannot convert");
-            if (productUnit.getUnitRoot(i) != 1)
-                throw new UnsupportedOperationException(productUnit + " holds a base unit with fractional exponent");
-            int pow = productUnit.getUnitPow(i);
-            if (pow < 0) { // Negative power.
-                pow = -pow;
-                cvtr = cvtr.inverse();
-            }
-            for (int j = 0; j < pow; j++) {
-                converter = converter.concatenate(cvtr);
-            }
-        }
-        return converter;
     }
 
     /**
@@ -457,7 +418,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * <code>CELSIUS = KELVIN.plus(273.15)</code>).
      * @return <code>this.transform(new AddConverter(offset))</code>
      */
-    public final Unit<Q> plus(double offset) {
+    public final Unit<Q> add(double offset) {
         if (offset == 0)
             return this;
         return transform(new AddConverter(offset));
@@ -470,7 +431,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * <code>KILOMETRE = METRE.times(1000)</code>).
      * @return <code>this.transform(new RationalConverter(factor, 1))</code>
      */
-    public final Unit<Q> times(long factor) {
+    public final Unit<Q> multiply(long factor) {
         if (factor == 1)
             return this;
         return transform(new RationalConverter(BigInteger.valueOf(factor),
@@ -484,7 +445,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * <code>ELECTRON_MASS = KILOGRAM.times(9.10938188e-31)</code>).
      * @return <code>this.transform(new MultiplyConverter(factor))</code>
      */
-    public final Unit<Q> times(double factor) {
+    public final Unit<Q> multiply(double factor) {
         if (factor == 1)
             return this;
         return transform(new MultiplyConverter(factor));
@@ -497,7 +458,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * @return <code>this * that</code>
      */
     @SuppressWarnings("unchecked")
-    public final Unit<?> times(Unit<?> that) {
+    public final Unit<?> multiply(Unit<?> that) {
         if (this.equals(ONE))
             return that;
         if (that.equals(ONE))
@@ -562,7 +523,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * @return <code>this / that</code>
      */
     public final Unit<?> divide(Unit<?> that) {
-        return this.times(that.inverse());
+        return this.multiply(that.inverse());
     }
 
     /**
@@ -590,7 +551,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      */
     public final Unit<?> pow(int n) {
         if (n > 0)
-            return this.times(this.pow(n - 1));
+            return this.multiply(this.pow(n - 1));
         else if (n == 0)
             return ONE;
         else
@@ -617,7 +578,7 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      * cannot be correctly parsed (e.g. not UCUM compliant).
      */
     public static Unit<?> valueOf(CharSequence csq) {
-        return UnitFormat.getStandard().parse(csq, new ParsePosition(0));
+        return UnitFormat.getInstance().parse(csq, new ParsePosition(0));
     }
 
     // ////////////////////
@@ -640,6 +601,16 @@ public abstract class Unit<Q extends Quantity> implements Serializable {
      */
     @Override
     public String toString() {
-        return UnitFormat.getStandard().format(this);
+        return UnitFormat.getInstance().format(this);
     }
+
+    /**
+     * Returns the locale representation of this unit.
+     *
+     * @return <code>UnitFormat.getInstance().format(this)</code>
+     */
+//    public String toLocalString() {
+//    	// FIXME needed?
+//        return UnitFormat.getInstance().format(this);
+//    }
 }

@@ -80,7 +80,6 @@
  */
 package javax.measure.unit;
 
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Quantity;
 
 /**
@@ -91,7 +90,7 @@ import javax.measure.quantity.Quantity;
  *     {@link Unit#alternate(String)} method.</p>
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0, April 15, 2009
+ * @version 1.1, $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  */
 public final class AlternateUnit<Q extends Quantity> extends DerivedUnit<Q> {
 
@@ -180,6 +179,16 @@ public final class AlternateUnit<Q extends Quantity> extends DerivedUnit<Q> {
     @Override
     public int hashCode() {
         return _symbol.hashCode();
+    }
+
+    @Override
+    public Dimension getDimension() {
+        return _parent.getDimension();
+    }
+ 
+    @Override
+    public UnitConverter getDimensionalTransform() {
+        return _parent.getDimensionalTransform();
     }
 
     private static final long serialVersionUID = 1L;

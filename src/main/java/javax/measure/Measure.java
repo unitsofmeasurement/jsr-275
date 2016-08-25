@@ -80,13 +80,12 @@
  */
 package javax.measure;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
 import java.text.ParsePosition;
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.UnitConverter;
 import javax.measure.unit.Unit;
 
 /**
@@ -143,10 +142,9 @@ import javax.measure.unit.Unit;
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.4 ($Revision: 76 $), $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version 1.1.2 ($Revision: 102 $), $Date: 2010-02-07 23:46:37 +0100 (So, 07 Feb 2010) $
  */
-public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
-        Serializable {
+public abstract class Measure<Q extends Quantity> extends Number implements Measurable<Q> {
 
     /**
 	 * 
@@ -193,7 +191,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
      * @throws ArithmeticException if the result is inexact and the quotient
      *         has a non-terminating decimal expansion.
      */
-    public Measure<Q> toSI() {
+    public Measure<Q> toSI() { // TODO needed?
         return to(this.getUnit().toSI());
     }
 
@@ -312,19 +310,31 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
     }
 
     /**
-     * Returns the <code>String</code> representation of this measure. The
-     * string produced for a given measure is always the same; it is not
+     * Returns the standard <code>String</code> representation of this measure.
+     * The string produced for a given measure is always the same; it is not
      * affected by locale. This means that it can be used as a canonical string
      * representation for exchanging measure, or as a key for a Hashtable, etc.
      * Locale-sensitive measure formatting and parsing is handled by the
      * {@link MeasureFormat} class and its subclasses.
      *
-     * @return <code>UnitFormat.getInternational().format(this)</code>
+     * @return <code>UnitFormat.getStandard().format(this)</code>
      */
     @Override
     public String toString() {
         return MeasureFormat.getStandard().format(this);
     }
+
+    /**
+     * Returns the locale <code>String</code> representation of this measure
+     * (usually nicer looking than {@link #toString}. The
+     * string produced for a given measure is not always the same depending
+     * on the locale.
+     *
+     * @return <code>UnitFormat.getInstance().format(this)</code>
+     */
+//    public String toStringLocale() {
+//        return MeasureFormat.getInstance().format(this);
+//    }
 
     // Implements Measurable
     public final int intValue(Unit<Q> unit) throws ArithmeticException {
@@ -343,12 +353,20 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
         }
         return (long) result;
     }
+    
+    public long longValue() {
+    	return longValue(getUnit());
+    }
 
     // Implements Measurable
     public final float floatValue(Unit<Q> unit) {
         return (float) doubleValue(unit);
     }
 
+    public final float floatValue() {
+    	return floatValue(getUnit());
+    }
+    
     /**
      * Casts this measure to a parameterized unit of specified nature or throw a
      * <code>ClassCastException</code> if the dimension of the specified
@@ -369,7 +387,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
     @SuppressWarnings("unchecked")
     public <T extends Quantity> Measure<T> asType(Class<T> type)
             throws ClassCastException {
-        this.getUnit().asType(type); // Raises ClassCastException is dimension
+        this.getUnit().asType(type); // Raises ClassCastException if dimension
         // mismatches.
         return (Measure<T>) this;
     }
@@ -414,35 +432,35 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
 		 */
 		private static final long serialVersionUID = 5355395476874521709L;
 
-		int _value;
+		int value;
 
-        Unit<T> _unit;
+        Unit<T> unit;
 
         public IntegerMeasure(int value, Unit<T> unit) {
-            _value = value;
-            _unit = unit;
+            this.value = value;
+            this.unit = unit;
         }
 
         @Override
         public Integer getValue() {
-            return _value;
+            return value;
         }
 
         @Override
         public Unit<T> getUnit() {
-            return _unit;
+            return unit;
         }
 
         // Implements Measurable
         public double doubleValue(Unit<T> unit) {
-            return (_unit.equals(unit)) ? _value : _unit.getConverterTo(unit).convert(_value);
+            return (this.unit.equals(unit)) ? value : this.unit.getConverterTo(unit).convert(value);
         }
 
         // Implements Measurable
         public BigDecimal decimalValue(Unit<T> unit, MathContext ctx)
                 throws ArithmeticException {
-            BigDecimal decimal = BigDecimal.valueOf(_value);
-            return (_unit.equals(unit)) ? decimal : _unit.getConverterTo(unit).convert(decimal, ctx);
+            BigDecimal decimal = BigDecimal.valueOf(value);
+            return (this.unit.equals(unit)) ? decimal : this.unit.getConverterTo(unit).convert(decimal, ctx);
         }
     }
 
@@ -646,7 +664,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
             return unit;
         }
 
-        // Implements Measurable
+        
         public double doubleValue(Unit<T> unit) {
             return (this.unit.equals(unit)) ? value.doubleValue() : this.unit.getConverterTo(unit).convert(value.doubleValue());
         }
@@ -657,4 +675,14 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
             return (this.unit.equals(unit)) ? value : this.unit.getConverterTo(unit).convert(value, ctx);
         }
     }
+
+	@Override
+	public double doubleValue() {
+		return doubleValue(getUnit());
+	}
+
+	@Override
+	public int intValue() {
+		return intValue(getUnit());
+	}
 }

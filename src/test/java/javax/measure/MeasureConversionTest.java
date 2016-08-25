@@ -80,7 +80,7 @@
  */
 package javax.measure;
 
-import static javax.measure.unit.format.TestUtil.*;
+import static javax.measure.util.TestUtil.*;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -91,7 +91,7 @@ import javax.measure.unit.Unit;
 import junit.framework.TestCase;
 
 /**
- * @version $Revision: 76 $, $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version $Revision: 91 $, $Date: 2010-01-31 23:15:50 +0100 (So, 31 Jän 2010) $
  * @author $Author: keilw $
  */
 public class MeasureConversionTest extends TestCase {

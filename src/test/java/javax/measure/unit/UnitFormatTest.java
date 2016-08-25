@@ -80,7 +80,9 @@
  */
 package javax.measure.unit;
 
-import static javax.measure.unit.format.TestUtil.*;
+import static javax.measure.unit.SI.*;
+import static javax.measure.unit.NonSI.*;
+import static javax.measure.util.TestUtil.*;
 
 import java.util.Locale;
 
@@ -90,7 +92,7 @@ import junit.framework.TestCase;
 
 /**
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version $Revision: 76 $, $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version $Revision: 92 $, $Date: 2010-01-31 23:16:07 +0100 (So, 31 Jän 2010) $
  */
 public class UnitFormatTest extends TestCase {
 	private static final String COMPARISON_POINT = "pt";
@@ -104,8 +106,8 @@ public class UnitFormatTest extends TestCase {
 		super.setUp();
 		//setName(UCUMFormatTest.class.getSimpleName());
 		
-		l1 = SI.CENTIMETRE;
-		l2 = NonSI.POINT;
+		l1 = CENTIMETRE;
+		l2 = POINT;
 		
 		print("Running " + getName()+
                 " [" + getClass().getSimpleName() + "]");
@@ -136,7 +138,7 @@ public class UnitFormatTest extends TestCase {
 	}
 
 	public void testGetStandard() {
-		format = UnitFormat.getStandard();
+		format = UnitFormat.getInstance();
 		String formattedText = format.format(l1);
 		print(formattedText);
 		//System.out.println(unit2);

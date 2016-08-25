@@ -80,7 +80,7 @@
  */
 package javax.measure.unit;
 
-import javax.measure.converter.UnitConverter;
+import javax.measure.unit.UnitConverter;
 import javax.measure.quantity.Dimensionless;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.Unit;
@@ -89,7 +89,7 @@ import junit.framework.TestCase;
 
 /**
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version $LastChangedRevision: 76 $, $LastChangedDate: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+ * @version $LastChangedRevision: 92 $, $LastChangedDate: 2010-01-31 23:16:07 +0100 (So, 31 Jän 2010) $
  */
 public class UnitTest extends TestCase {
 	Unit<Dimensionless> one;
@@ -178,34 +178,34 @@ public class UnitTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link javax.measure.unit.Unit#plus(double)}.
+	 * Test method for {@link javax.measure.unit.Unit#add(double)}.
 	 */
 	public void testPlus() {
-		Unit<? extends Quantity> result = one.plus(10);
+		Unit<? extends Quantity> result = one.add(10);
 		assertNotSame(result, one);
 	}
 
 	/**
-	 * Test method for {@link javax.measure.unit.Unit#times(long)}.
+	 * Test method for {@link javax.measure.unit.Unit#multiply(long)}.
 	 */
 	public void testTimesLong() {
-		Unit<? extends Quantity> result = one.times(2L);
+		Unit<? extends Quantity> result = one.multiply(2L);
 		assertNotSame(result, one);
 	}
 
 	/**
-	 * Test method for {@link javax.measure.unit.Unit#times(double)}.
+	 * Test method for {@link javax.measure.unit.Unit#multiply(double)}.
 	 */
 	public void testTimesDouble() {
-		Unit<? extends Quantity> result = one.times(2.1);
+		Unit<? extends Quantity> result = one.multiply(2.1);
 		assertNotSame(result, one);
 	}
 
 	/**
-	 * Test method for {@link javax.measure.unit.Unit#times(javax.measure.unit.Unit)}.
+	 * Test method for {@link javax.measure.unit.Unit#multiply(javax.measure.unit.Unit)}.
 	 */
 	public void testTimesUnitOfQ() {
-		Unit<? extends Quantity> result = one.times(one);
+		Unit<? extends Quantity> result = one.multiply(one);
 		assertEquals(result, one);
 	}
 

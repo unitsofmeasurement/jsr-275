@@ -1,12 +1,13 @@
 Manifest-Version: 1.0
-Bundle-ManifestVersion: 2
-Bundle-Vendor: JScience
-Bundle-SymbolicName: javax.measure
-Bundle-Name: Measures and Units
-Bundle-Version: 0.9.3
-Export-Package: javax.measure,
- javax.measure.converter,
+Export-Package: javax.measure;uses:="javax.measure.unit,junit.framework",
  javax.measure.quantity,
- javax.measure.unit,
- javax.measure.unit.format
+ javax.measure.unit;uses:="junit.framework"
+Bundle-Version: 0.9.5
+Tool: Bundlor 1.0.0.BUILD-20091207202403
+Bundle-Name: Units of Measure
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: javax.measure
+Import-Package: junit.framework
+Provide-Package: javax.measure,javax.measure.quantity,javax.measure.un
+ it
 

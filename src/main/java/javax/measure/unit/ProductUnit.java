@@ -82,8 +82,6 @@ package javax.measure.unit;
 
 import java.io.Serializable;
 
-import javax.measure.converter.LinearConverter;
-import javax.measure.converter.UnitConverter;
 import javax.measure.quantity.Quantity;
 
 /**
@@ -96,7 +94,7 @@ import javax.measure.quantity.Quantity;
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @version 1.0, April 15, 2009
- * @see Unit#times(Unit)
+ * @see Unit#multiply(Unit)
  * @see Unit#divide(Unit)
  * @see Unit#pow(int)
  * @see Unit#root(int)
@@ -398,7 +396,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
             Unit<?> unit = _elements[i]._unit.toSI();
             unit = unit.pow(_elements[i]._pow);
             unit = unit.root(_elements[i]._root);
-            systemUnit = systemUnit.times(unit);
+            systemUnit = systemUnit.multiply(unit);
         }
         return (Unit<Q>) systemUnit;
     }
@@ -411,7 +409,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
         for (int i = 0; i < _elements.length; i++) {
             Element e = _elements[i];
             UnitConverter cvtr = e._unit.getConverterToSI();
-            if (!(cvtr instanceof LinearConverter))
+            if (!(cvtr.isLinear()))
                 throw new UnsupportedOperationException(e._unit + " is non-linear, cannot convert");
             if (e._root != 1)
                 throw new UnsupportedOperationException(e._unit + " holds a base unit with fractional exponent");
@@ -442,7 +440,40 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
         return true;
     }
 
-    /**
+    @Override
+    public Dimension getDimension() {
+        Dimension dimension = Dimension.NONE;
+        for (int i = 0; i < this.getUnitCount(); i++) {
+            Unit<?> unit = this.getUnit(i);
+            Dimension d = unit.getDimension().pow(this.getUnitPow(i)).root(this.getUnitRoot(i));
+            dimension = dimension.multiply(d);
+        }
+        return dimension;
+    }
+
+    @Override
+    public UnitConverter getDimensionalTransform() {
+        UnitConverter converter = UnitConverter.IDENTITY;
+        for (int i = 0; i < this.getUnitCount(); i++) {
+            Unit<?> unit = this.getUnit(i);
+            UnitConverter cvtr = unit.getDimensionalTransform();
+            if (!(cvtr.isLinear()))
+                throw new UnsupportedOperationException(cvtr.getClass() + " is non-linear, cannot convert product unit");
+            if (this.getUnitRoot(i) != 1)
+                throw new UnsupportedOperationException(this + " holds a unit with fractional exponent");
+            int pow = this.getUnitPow(i);
+            if (pow < 0) { // Negative power.
+                pow = -pow;
+                cvtr = cvtr.inverse();
+            }
+            for (int j = 0; j < pow; j++) {
+                converter = converter.concatenate(cvtr);
+            }
+        }
+        return converter;
+    }
+
+     /**
      * Returns the greatest common divisor (Euclid's algorithm).
      * 
      * @param m the first number.
@@ -517,7 +548,6 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
         public int getRoot() {
             return _root;
         }
-
         private static final long serialVersionUID = 1L;
 
     }

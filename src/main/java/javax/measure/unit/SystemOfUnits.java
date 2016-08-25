@@ -80,7 +80,9 @@
  */
 package javax.measure.unit;
 
+import java.util.HashSet;
 import java.util.Set;
+import javax.measure.quantity.Quantity;
 
 /**
  * <p> This class represents a system of units, it groups units together 
@@ -90,7 +92,8 @@ import java.util.Set;
  *     held by {@link NonSI}).</p>
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0, April 15, 2009
+ * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
+ * @version 1.0.1, $Date: 2010-01-31 23:15:22 +0100 (So, 31 Jän 2010) $
  */
 public abstract class SystemOfUnits {
 
@@ -100,4 +103,55 @@ public abstract class SystemOfUnits {
      * @return the collection of units.
      */
     public abstract Set<Unit<?>> getUnits();
+
+    /**
+     * Returns the the units defined in this system of specified type
+     * (convenience method). This method returns all the units in this
+     * system of units having the same standard unit as the one defined
+     * by the specified quantity class. This method is more selective than
+     * the {@link #getUnits(javax.measure.unit.Dimension)} since units may
+     * have the same dimension and still be used to measure quantities
+     * of different kinds.
+     *
+     * @param type the type of the units to be returned.
+     * @return the collection of units of specified type.
+     */
+    @SuppressWarnings("unchecked")
+    public <Q extends Quantity> Set<Unit<Q>> getUnits(Class<Q> type) {
+         Set<Unit<Q>> units = new HashSet();
+         Unit<Q> standardUnit = null;
+         try {
+            standardUnit = (Unit<Q>) type.getField("UNIT").get(null);
+         } catch (Exception e) {
+            throw new UnsupportedOperationException(
+                    "The quantity class " + type + " does not have a public static field UNIT holding the SI unit " + " for the quantity.");
+         }
+         for (Unit<?> unit : getUnits()) {
+             if (unit.toSI().equals(standardUnit)) {
+                 units.add((Unit<Q>)unit);
+             }
+         }
+        return units;
+    }
+
+    /**
+     * Returns the units defined in this system having the specified
+     * dimension (convenience method). This method returns all the units
+     * in this system of units having the specified dimension.
+     * This method is less selective than  {@link #getUnits(java.lang.Class)}
+     * since units may have the same dimension and still be used to measure
+     * quantities of different kinds.
+     *
+     * @param dimension the dimension of the units to be returned.
+     * @return the collection of units of specified dimension.
+     */
+    public Set<Unit<?>> getUnits(Dimension dimension) {
+         Set<Unit<?>> units = new HashSet<Unit<?>>();
+         for (Unit<?> unit : getUnits()) {
+             if (unit.getDimension().equals(dimension)) {
+                 units.add(unit);
+             }
+         }
+        return units;
+    }
 }
