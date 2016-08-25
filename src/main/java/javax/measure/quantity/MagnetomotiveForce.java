@@ -6,23 +6,15 @@
  */
 package javax.measure.quantity;
 
-import javax.measure.Unit;
-
 /**
- * This interface represents a force that produces magnetic flux.
- *
- * The system unit for this quantity is "At" (ampere-turn).
+ * Represents a force that produces magnetic flux.
+ * The metric system unit for this quantity is "At" (ampere-turn).
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 126 $), $Date: 2010-02-17 09:41:38 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.1 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
  * @see     <a href="http://en.wikipedia.org/wiki/Magnetomotive_force">Wikipedia's Magnetomotive Force</a>
- *
  */
-public interface MagnetomotiveForce extends Magnetic {
+public interface MagnetomotiveForce extends Quantity<MagnetomotiveForce> {
 
-    /**
-     * Holds the SI unit (Système International d'Unités) for this quantity.
-     */
-    Unit<MagnetomotiveForce> getUnit();
 }

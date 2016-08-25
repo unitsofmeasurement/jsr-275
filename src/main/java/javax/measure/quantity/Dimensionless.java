@@ -6,19 +6,12 @@
  */
 package javax.measure.quantity;
 
-import javax.measure.Quantity;
-
 /**
- * This interface represents a dimensionless quantity.
+ * Represents a dimensionless quantity.
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @version 1.0, April 15, 2009
  */
-public interface Dimensionless extends Quantity {
-
-    /**
-     * Holds the SI unit (Système International d'Unités) for this quantity.
-     */
-    //Unit<Dimensionless> getUnit();
+public interface Dimensionless extends Quantity<Dimensionless> {
 
 }

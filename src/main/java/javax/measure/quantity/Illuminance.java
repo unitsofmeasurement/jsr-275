@@ -5,22 +5,14 @@
  *   See LICENSE.txt for the Specification License
  */
 package javax.measure.quantity;
-import javax.measure.Quantity;
-import javax.measure.Unit;
-import javax.measure.unit.MetricSystem;
 
 /**
- * This interface represents an illuminance. The system unit for this quantity
- * is "lx" (lux).
+ * Represents an illuminance.
+ * The metric system unit for this quantity is "lx" (lux).
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @version 1.0, April 15, 2009
  */
-public interface Illuminance extends Quantity {
-
-    /**
-     * Holds the SI unit (Système International d'Unités) for this quantity.
-     */
-    Unit<Illuminance> getUnit();
+public interface Illuminance extends Quantity<Illuminance> {
 
 }

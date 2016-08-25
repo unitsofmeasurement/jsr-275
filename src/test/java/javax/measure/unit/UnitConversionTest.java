@@ -11,21 +11,20 @@ import static org.junit.Assert.*;
 
 import javax.measure.quantity.Length;
 //import javax.measure.unit.NonSI;
-import javax.measure.unit.MetricSystem;
-import javax.measure.util.QuantityFactory;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
+import javax.measure.quantity.QuantityFactory;
+import static javax.measure.unit.MetricSystem.*;
 
 import org.junit.Test;
 
 /**
- * @version $Revision: 134 $, $Date: 2010-02-17 21:55:53 +0100 (Mi, 17 Feb 2010) $
+ * @version $Revision: 180 $, $Date: 2010-02-23 16:11:17 +0100 (Di, 23 Feb 2010) $
  * @author $Author: keilw $
  */
 public class UnitConversionTest {
     static final Unit<Length> unit1 = MetricSystem.METRE;
-    static final Unit<Length> unit2 = MetricSystem.CENTIMETRE;
-
+    static final Unit<Length> unit2 = MetricSystem.CENTI(METRE);
+    static final Unit<Length> unit3 = USCustomarySystem.FOOT;
+    
     protected void setUp() throws Exception {
 //        super.setUp();
     }
@@ -38,22 +37,29 @@ public class UnitConversionTest {
     public void testConvert() {
         try {
             //unitConverter = unit1.getConverterTo(unit2);
-            Length m1 = QuantityFactory.getInstance().create(Length.class, 23, unit1);
+            Length m1 = QuantityFactory.getInstance(Length.class).create(23, unit1);
             //reset = true;
 
-            UnitConverter converter = m1.getUnit().getConverterTo(unit2);
+            UnitConverter converter = unit1.getConverterTo(unit2);
 //            Length m2 = m1.to(unit2, MathContext.DECIMAL32);
-            Length m2 = QuantityFactory.getInstance().create(Length.class, converter.convert(23), unit2);
-            assertEquals(2300d, m2.getValue());
+            Length m2 = QuantityFactory.getInstance(Length.class).create(converter.convert(23), unit2);
+      //      assertEquals(2300d, m2.doubleValue(unit2));
+            String operation;
             if (isTestOutput()) {
-                String operation = m1 + " -> " + unit2;
+                operation = m1 + " -> " + unit2;
                 String number = m2.toString();
                 StringBuilder build = new StringBuilder(operation);
                 build.append(": ");
                 build.append(number);
                 print(build.toString());
             }
-
+            
+            converter = unit2.getConverterTo(unit3);
+            if (isTestOutput()) {
+                operation = unit2 + " -> " + unit3;
+                print(operation);
+            }
+            
         } catch (Exception e) {
             //reset = true;
             //number = UI_ERR;

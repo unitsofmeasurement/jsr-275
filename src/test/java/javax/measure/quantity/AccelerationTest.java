@@ -4,46 +4,57 @@
  *
  *   See LICENSE.txt for the Specification License
  */
-/**
- *
- */
 package javax.measure.quantity;
 
 import static javax.measure.unit.MetricSystem.*;
 import static javax.measure.util.TestUtil.*;
 
-import javax.measure.QuantityProvider;
-import javax.measure.quantity.Acceleration;
-import javax.measure.quantity.Length;
-import javax.measure.quantity.Velocity;
-import javax.measure.unit.MetricSystem;
-import javax.measure.util.QuantityFactory;
-
 import org.junit.Test;
-
+import static org.junit.Assert.*;
 
 /**
- * @author Werner Keil
- *
+ * Based on <b>Andrew Kennedy's Blog</b>, with assertions added.
+ * 
+ * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
+ * @version $Revision: 192 $, $Date: 2010-02-24 17:46:38 +0100 (Mi, 24 Feb 2010) $
+ * @see <a href="http://blogs.msdn.com/andrewkennedy/archive/2008/08/29/units-of-measure-in-f-part-one-introducing-units.aspx">Units of Measure in F#: Part One, Introducing Units</a>
  */
 public class AccelerationTest {
 
     @Test
     public void testFallSpeed() {
-        QuantityProvider provider = QuantityFactory.getInstance();
-        Acceleration gravityOnEarth = provider.create(Acceleration.class, 9.808, METRES_PER_SQUARE_SECOND);
-        Length heightOfBuilding = provider.create(Length.class, 40.0, METRE);
+    	double HEIGHT_AS_DOUBLE = 400.0d;
+        QuantityFactory<Acceleration> accelerationFactory = QuantityFactory.getInstance(Acceleration.class);
+        Acceleration gravityOnEarth = accelerationFactory.create(9.808, METRES_PER_SQUARE_SECOND);
+        assertEquals("Can't get tuple element.", 9.808, gravityOnEarth.getValue());
+        assertSame("Can't get tuple element.", METRES_PER_SQUARE_SECOND, gravityOnEarth.getUnit());
+        assertEquals("Shall be equals to itself.", gravityOnEarth, gravityOnEarth);
+        assertEquals("9.808 m/s²", gravityOnEarth.toString());
 
-        Velocity speedOfImpact = provider.create(Velocity.class, Math.sqrt(
-         2 * gravityOnEarth.getValue().doubleValue() *
-         heightOfBuilding.getValue().doubleValue()),
-         MetricSystem.METRES_PER_SECOND);
+        QuantityFactory<Length> lengthFactory = QuantityFactory.getInstance(Length.class);
+        Length heightOfBuilding = lengthFactory.create(HEIGHT_AS_DOUBLE, CENTI(METRE));
+        assertEquals("Can't get tuple element.", HEIGHT_AS_DOUBLE, heightOfBuilding.getValue());
+        assertEquals("Can't get tuple element.", CENTI(METRE), heightOfBuilding.getUnit());
+        assertEquals("Shall be equals to itself.", heightOfBuilding, heightOfBuilding);
+        assertEquals("400.0 cm", heightOfBuilding.toString());
+        
+        assertFalse("Expected non-equal.", gravityOnEarth.equals(heightOfBuilding));
+        assertFalse("Expected different hash code", gravityOnEarth.hashCode() == heightOfBuilding.hashCode());
+
+        // The following calculation implies a unit conversion from metres to centimetres.
+        QuantityFactory<Velocity> velocityFactory = QuantityFactory.getInstance(Velocity.class);
+        print("H: " + heightOfBuilding.toString());
+        print("G: " + gravityOnEarth.toString());
+        
+        Velocity speedOfImpact = velocityFactory.create(
+                Math.sqrt(2d * 
+                gravityOnEarth.doubleValue(METRES_PER_SQUARE_SECOND) *
+                heightOfBuilding.doubleValue(METRE)),
+                METRES_PER_SECOND);
+        assertEquals(8.8579907428265017350882265621754, speedOfImpact.getValue().doubleValue(), 1E-15);
+        assertSame("Can't get tuple element.", METRES_PER_SECOND, speedOfImpact.getUnit());
 
         print(speedOfImpact.toString());
-
-//      Quantity temp = QuantityFactory.create(gravityOnEarth.getValue().doubleValue() *
-//              heightOfBuilding.getValue().doubleValue(),
-//              gravityOnEarth.getUnit().multiply(heightOfBuilding.getUnit()));
-//      print (temp.toString());
     }
+
 }

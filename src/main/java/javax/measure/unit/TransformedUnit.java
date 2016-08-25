@@ -6,9 +6,9 @@
  */
 package javax.measure.unit;
 
-import javax.measure.Quantity;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
+import javax.measure.quantity.Quantity;
+import javax.measure.unit.Unit;
+import javax.measure.unit.UnitConverter;
 
 /**
  * <p> This class represents the units derived from other units using
@@ -29,13 +29,16 @@ import javax.measure.UnitConverter;
  * @param <Q> The type of the quantity measured by this unit.
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 127 $), $Date: 2010-02-17 10:13:47 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.0.1 ($Revision: 187 $), $Date: 2010-02-24 12:34:43 +0100 (Mi, 24 Feb 2010) $
  */
-public final class TransformedUnit<Q extends Quantity> extends DerivedUnit<Q> {
-    /** The serialVersionUID */
-    private static final long serialVersionUID = -1846401910180377008L;
-
+final class TransformedUnit<Q extends Quantity<Q>> extends Unit<Q> {
+  
     /**
+	 * For cross-version compatibility.
+	 */
+	private static final long serialVersionUID = -442449068482939939L;
+
+	/**
      * Holds the parent unit (not a transformed unit).
      */
     private final Unit<Q> parentUnit;
@@ -97,12 +100,12 @@ public final class TransformedUnit<Q extends Quantity> extends DerivedUnit<Q> {
     }
 
     @Override
-    public Unit<Q> toSI() {
-        return parentUnit.toSI();
+    public Unit<Q> toMetric() {
+        return parentUnit.toMetric();
     }
 
     @Override
-    public UnitConverter getConverterToSI() {
-        return parentUnit.getConverterToSI().concatenate(toParentUnit);
+    public UnitConverter getConverterToMetric() {
+        return parentUnit.getConverterToMetric().concatenate(toParentUnit);
     }
 }

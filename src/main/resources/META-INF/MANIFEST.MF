@@ -4,6 +4,5 @@ Bundle-Vendor: JScience
 Bundle-SymbolicName: javax.measure
 Bundle-Name: Measures and Units
 Bundle-Version: 0.9.5
-Export-Package: javax.measure,
- javax.measure.quantity,
- javax.measure.unit
+Export-Package: javax.measure.quantity,
+ javax.measure.unit;uses:="junit.framework"

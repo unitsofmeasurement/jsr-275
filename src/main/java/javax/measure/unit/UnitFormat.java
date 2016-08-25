@@ -12,16 +12,16 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Locale;
 
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
+import javax.measure.unit.format.LocalFormat;
+
 
 /**
  * <p> This class provides the interface for formatting and parsing {@link
  *     Unit units}.</p>
  *
- * <p> For all {@link MetricSystem} units, the 20 SI prefixes used to form decimal
+ * <p> For all metric units, the 20 SI prefixes used to form decimal
  *     multiples and sub-multiples of SI units are recognized.
- *     {@link NonSI} units are directly recognized. For example:[code]
+ *     {@link USCustomarySystem US Customary} units are directly recognized. For example:[code]
  *        Unit.valueOf("m°C").equals(SI.MILLI(SI.CELSIUS))
  *        Unit.valueOf("kW").equals(SI.KILO(SI.WATT))
  *        Unit.valueOf("ft").equals(SI.METRE.multiply(3048).divide(10000))[/code]</p>
@@ -29,7 +29,7 @@ import javax.measure.UnitConverter;
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author Eric Russell
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 134 $), $Date: 2010-02-17 21:55:53 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.1 ($Revision: 188 $), $Date: 2010-02-24 13:07:13 +0100 (Mi, 24 Feb 2010) $
  */
 public abstract class UnitFormat extends Format {
 
@@ -63,7 +63,7 @@ public abstract class UnitFormat extends Format {
      *
      * @return the symbol map used by this format.
      */
-    protected abstract SymbolMap getSymbolMap();
+    public abstract SymbolMap getSymbolMap();
 
     /**
      * Formats the specified unit.
@@ -133,8 +133,8 @@ public abstract class UnitFormat extends Format {
 
     /**
      * <p> This interface provides a set of mappings between
-     *     {@link javax.measure.Unit Units} and symbols (both ways),
-     *     and from {@link javax.measure.converter.UnitConverter
+     *     {@link javax.measure.unit.Unit Units} and symbols (both ways),
+     *     and from {@link javax.measure.unit.UnitConverter
      *     UnitConverter}s to prefixes symbols (also both ways).</p>
      */
     public interface SymbolMap {

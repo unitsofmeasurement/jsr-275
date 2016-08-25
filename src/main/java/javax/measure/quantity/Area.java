@@ -6,22 +6,14 @@
  */
 package javax.measure.quantity;
 
-import javax.measure.Quantity;
-import javax.measure.Unit;
-
 /**
- * This interface represents the extent of a planar region or of the surface of
- * a solid measured in square units. The system unit for this quantity
- * is "m2" (square metre).
+ * Represents the extent of a planar region or of the surface of
+ * a solid measured in square units.
+ * The metric system unit for this quantity is "m²" (square metre).
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.1 ($Revision: 126 $), $Date: 2010-02-17 09:41:38 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.1 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
  */
-public interface Area extends Quantity {
-
-    /**
-     * Holds the SI unit (Système International d'Unités) for this quantity.
-     */
-    Unit<Area> getUnit();
+public interface Area extends Quantity<Area> {
 
 }

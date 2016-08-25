@@ -6,7 +6,7 @@
             https://jsr-275.dev.java.net/
      ======================================================================= -->
 
-<!-- $Id: pom.xml 126 2010-02-17 08:41:38Z martdesruisseaux $ -->
+<!-- $Id: pom.xml 204 2010-02-25 01:36:05Z keilw $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -25,7 +25,7 @@
     <groupId>javax.measure</groupId>
     <artifactId>jsr-275</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.5-SNAPSHOT</version>
+    <version>0.9.5</version>
     <name>JSR-275</name>
     <url>https://jsr-275.dev.java.net/</url>
 
@@ -155,10 +155,7 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
+        <developer>
             <name>Daniel Leuck</name>
             <organization>Ikayzo</organization>
             <email>dan@ikayzo.com</email>
@@ -166,6 +163,40 @@
             <roles>
                 <role>EG Member</role>
                 <role>Repository Admin</role>
+                <role>Globalization Support</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <contributors>
+        <contributor>
+            <name>Scott Murphy</name>
+            <organization>Ikayzo</organization>
+            <email>scott@ikayzo.com</email>
+            <timezone>-9</timezone>
+            <roles>
+                <role>Translator</role>
+                <role>Japanese</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Mika Terada</name>
+            <organization>Ikayzo</organization>
+            <email>mika@ikayzo.com</email>
+            <timezone>-9</timezone>
+            <roles>
+                <role>Translator</role>
+                <role>Japanese</role>
+            </roles>
+        </contributor>
+        <contributor>
+            <name>Anatol Filin</name>
+            <organization>Gramant</organization>
+            <email>anatol@gramant.ru</email>
+            <timezone>+4</timezone>
+            <roles>
+                <role>Translator</role>
+                <role>Russian</role>
             </roles>
         </contributor>
         <contributor>
@@ -229,8 +260,6 @@
         </contributor>
     </contributors>
 
-
-
     <!-- =========================================================== -->
     <!--     Dependency Management                                   -->
     <!--                                                             -->
@@ -244,7 +273,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
 
     <!-- ======================================================= -->
@@ -284,7 +312,7 @@
 
             <!-- ======================================================= -->
             <!--     License                                             -->
-            <!-- =======================================================
+            <!-- ======================================================= 
             <plugin>
                 <groupId>com.google.code.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
@@ -306,7 +334,7 @@
                     </execution>
                 </executions>
             </plugin>
-            TODO enable this only for major upgrades
+             TODO enable this only for major upgrades
             (ensure to copy LICENSE.txt to LICENSE.bak first)
             -->
       
@@ -364,7 +392,7 @@
                             <Implementation-Version>${project.version}</Implementation-Version>
 	            			<!-- mode>development</mode> TODO call it stage?
 	            			<SCM-Revision>${buildNumber}</SCM-Revision-->
-                            <SCM-Revision>$Revision: 126 $</SCM-Revision>
+                            <SCM-Revision>$Revision: 204 $</SCM-Revision>
                         </manifestEntries>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
@@ -410,7 +438,7 @@
                     <noqualifier>all</noqualifier>   <!-- Omit qualifying package name before class names in output. -->
                     <quiet>true</quiet>              <!-- Shuts off non-error and non-warning messages.              -->
                     <keywords>true</keywords>        <!-- Adds HTML meta keyword tags to the generated files.        -->
-
+                    <excludePackageNames>javax.measure.unit.format:javax.measure.unit.converter:javax.measure.util</excludePackageNames>
                     <!-- Creates links to existing javadoc-generated   -->
                     <!-- documentation of external referenced classes. -->
                     <links>

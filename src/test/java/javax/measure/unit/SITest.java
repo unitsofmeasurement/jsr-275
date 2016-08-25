@@ -7,8 +7,8 @@
 package javax.measure.unit;
 
 import static javax.measure.util.TestUtil.print;
-
-import javax.measure.Unit;
+import static javax.measure.unit.MetricSystem.METRE;
+import static javax.measure.unit.USCustomarySystem.METER;
 
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import junit.framework.TestCase;
 /**
  * Unit test for class javax.measure.unit.SI
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 134 $), $Date: 2010-02-17 21:55:53 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.1 ($Revision: 172 $), $Date: 2010-02-21 20:02:14 +0100 (So, 21 Feb 2010) $
  */
 public class SITest extends TestCase {
 
@@ -60,6 +60,8 @@ public class SITest extends TestCase {
         print(Unit.valueOf("m").getDimension().toString());
     }
 
-
-
+    @Test
+    public void testSIvsUS() {
+    	assertEquals(METRE, METER);
+    }
 }

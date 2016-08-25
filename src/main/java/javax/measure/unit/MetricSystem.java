@@ -6,13 +6,47 @@
  */
 package javax.measure.unit;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import javax.measure.quantity.Acceleration;
+import javax.measure.quantity.AmountOfSubstance;
+import javax.measure.quantity.Angle;
+import javax.measure.quantity.Area;
+import javax.measure.quantity.CatalyticActivity;
+import javax.measure.quantity.DataAmount;
+import javax.measure.quantity.ElectricCapacitance;
+import javax.measure.quantity.ElectricCharge;
+import javax.measure.quantity.ElectricConductance;
+import javax.measure.quantity.ElectricCurrent;
+import javax.measure.quantity.ElectricInductance;
+import javax.measure.quantity.ElectricPotential;
+import javax.measure.quantity.ElectricResistance;
+import javax.measure.quantity.Energy;
+import javax.measure.quantity.Force;
+import javax.measure.quantity.Frequency;
+import javax.measure.quantity.Illuminance;
+import javax.measure.quantity.Length;
+import javax.measure.quantity.LuminousFlux;
+import javax.measure.quantity.LuminousIntensity;
+import javax.measure.quantity.MagneticFlux;
+import javax.measure.quantity.MagneticFluxDensity;
+import javax.measure.quantity.MagnetomotiveForce;
+import javax.measure.quantity.Mass;
+import javax.measure.quantity.Power;
+import javax.measure.quantity.Pressure;
+import javax.measure.quantity.Quantity;
+import javax.measure.quantity.RadiationDoseAbsorbed;
+import javax.measure.quantity.RadiationDoseEffective;
+import javax.measure.quantity.RadioactiveActivity;
+import javax.measure.quantity.SolidAngle;
+import javax.measure.quantity.Temperature;
+import javax.measure.quantity.Time;
+import javax.measure.quantity.Velocity;
+import javax.measure.quantity.Volume;
 
-import javax.measure.SystemOfUnits;
-import javax.measure.Unit;
-import javax.measure.quantity.*;
+import javax.measure.unit.converter.RationalConverter;
 
 /**
  * <p> This class contains SI (Système International d'Unités) base units,
@@ -29,8 +63,7 @@ import javax.measure.quantity.*;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0 ($Revision: 134 $), $Date: 2010-02-17 21:55:53 +0100 (Mi, 17 Feb 2010) $
- * @see <a href="http://en.wikipedia.org/wiki/Metric_System">Wikipedia: Metric System</a>
+ * @version 1.16 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/International_System_of_Units">Wikipedia: International System of Units</a>
  */
 public final class MetricSystem extends SystemOfUnits {
@@ -45,24 +78,17 @@ public final class MetricSystem extends SystemOfUnits {
      */
     private static final MetricSystem INSTANCE = new MetricSystem();
 
-    @Override
-    public String getName() {
-        return MetricSystem.class.getSimpleName();
-    }
-
     /**
      * Returns the singleton instance of this class.
      *
-     * @return the SI instance.
+     * @return the metric system instance.
      */
     public static final MetricSystem getInstance() {
         return INSTANCE;
     }
-
     ////////////////
     // BASE UNITS //
     ////////////////
-
     /**
      * The base unit for electric current quantities (<code>A</code>).
      * The Ampere is that constant current which, if maintained in two straight
@@ -71,7 +97,7 @@ public final class MetricSystem extends SystemOfUnits {
      * these conductors a force equal to 2 * 10-7 newton per meter of length.
      * It is named after the French physicist Andre Ampere (1775-1836).
      */
-    public static final BaseUnit<Electric.Current> AMPERE = si(new BaseUnit<Electric.Current>(
+    public static final BaseUnit<ElectricCurrent> AMPERE = addUnit(new BaseUnit<ElectricCurrent>(
             "A"));
 
     /**
@@ -83,7 +109,7 @@ public final class MetricSystem extends SystemOfUnits {
      * @see <a href="http://en.wikipedia.org/wiki/Candela">
      *      Wikipedia: Candela</a>
      */
-    public static final BaseUnit<Luminous.Intensity> CANDELA = si(new BaseUnit<Luminous.Intensity>(
+    public static final BaseUnit<LuminousIntensity> CANDELA = addUnit(new BaseUnit<LuminousIntensity>(
             "cd"));
 
     /**
@@ -92,8 +118,8 @@ public final class MetricSystem extends SystemOfUnits {
      * triple point of water. It is named after the Scottish mathematician and
      * physicist William Thomson 1st Lord Kelvin (1824-1907)
      */
-    public static final BaseUnit<Temperature> KELVIN = si(new BaseUnit<Temperature>(
-            "Kelvin", "K"));
+    public static final BaseUnit<Temperature> KELVIN = addUnit(new BaseUnit<Temperature>(
+            "K"));
 
     /**
      * The base unit for mass quantities (<code>kg</code>).
@@ -102,21 +128,21 @@ public final class MetricSystem extends SystemOfUnits {
      * form of a platinum-iridium cylinder kept at Sevres in France.
      * @see   #GRAM
      */
-    public static final BaseUnit<Mass> KILOGRAM = si(new BaseUnit<Mass>("Kilogram", "kg"));
+    public static final BaseUnit<Mass> KILOGRAM = addUnit(new BaseUnit<Mass>("kg"));
 
     /**
      * The base unit for length quantities (<code>m</code>).
      * One metre was redefined in 1983 as the distance traveled by light in
      * a vacuum in 1/299,792,458 of a second.
      */
-    public static final BaseUnit<Length> METRE = si(new BaseUnit<Length>("Metre", "m"));
+    public static final BaseUnit<Length> METRE = addUnit(new BaseUnit<Length>("m"));
 
     /**
      * The base unit for amount of substance quantities (<code>mol</code>).
      * The mole is the amount of substance of a system which contains as many
      * elementary entities as there are atoms in 0.012 kilogram of carbon 12.
      */
-    public static final BaseUnit<AmountOfSubstance> MOLE = si(new BaseUnit<AmountOfSubstance>(
+    public static final BaseUnit<AmountOfSubstance> MOLE = addUnit(new BaseUnit<AmountOfSubstance>(
             "mol"));
 
     /**
@@ -125,7 +151,7 @@ public final class MetricSystem extends SystemOfUnits {
      * corresponding to the transition between two hyperfine levels of
      * the ground state of cesium (1967 Standard).
      */
-    public static final BaseUnit<Time> SECOND = si(new BaseUnit<Time>(
+    public static final BaseUnit<Time> SECOND = addUnit(new BaseUnit<Time>(
             "s"));
     ////////////////////////////////
     // SI DERIVED ALTERNATE UNITS //
@@ -134,7 +160,7 @@ public final class MetricSystem extends SystemOfUnits {
     /**
      * The unit for magnetomotive force (<code>At</code>).
      */
-    public static final Unit<MagnetomotiveForce> AMPERE_TURN = si(new AlternateUnit<MagnetomotiveForce>("ampere-turn", "At", MetricSystem.AMPERE));
+    public static final Unit<MagnetomotiveForce> AMPERE_TURN = addUnit(new AlternateUnit<MagnetomotiveForce>("At", MetricSystem.AMPERE));
 
     /**
      * The derived unit for mass quantities (<code>g</code>).
@@ -147,8 +173,8 @@ public final class MetricSystem extends SystemOfUnits {
      * One radian is the angle between two radii of a circle such that the
      * length of the arc between them is equal to the radius.
      */
-    public static final AlternateUnit<Angle> RADIAN = si(new AlternateUnit<Angle>(
-            "radian", "rad", Unit.ONE));
+    public static final Unit<Angle> RADIAN = addUnit(new AlternateUnit<Angle>(
+            "rad", Unit.ONE));
 
     /**
      * The unit for solid angle quantities (<code>sr</code>).
@@ -156,13 +182,13 @@ public final class MetricSystem extends SystemOfUnits {
      * an area on the surface of the sphere that is equal to the radius squared.
      * The total solid angle of a sphere is 4*Pi steradians.
      */
-    public static final AlternateUnit<SolidAngle> STERADIAN = si(new AlternateUnit<SolidAngle>(
+    public static final Unit<SolidAngle> STERADIAN = addUnit(new AlternateUnit<SolidAngle>(
             "sr", Unit.ONE));
 
     /**
      * The unit for binary information (<code>bit</code>).
      */
-    public static final AlternateUnit<DataAmount> BIT = si(new AlternateUnit<DataAmount>(
+    public static final Unit<DataAmount> BIT = addUnit(new AlternateUnit<DataAmount>(
             "bit", Unit.ONE));
 
     /**
@@ -171,8 +197,8 @@ public final class MetricSystem extends SystemOfUnits {
      * After Heinrich Rudolf Hertz (1857-1894), German physicist who was the
      * first to produce radio waves artificially.
      */
-    public static final AlternateUnit<Frequency> HERTZ = si(new AlternateUnit<Frequency>(
-            "hertz", "Hz", Unit.ONE.divide(SECOND)));
+    public static final Unit<Frequency> HERTZ = addUnit(new AlternateUnit<Frequency>(
+            "Hz", Unit.ONE.divide(SECOND)));
 
     /**
      * The derived unit for force (<code>N</code>).
@@ -180,15 +206,15 @@ public final class MetricSystem extends SystemOfUnits {
      * of 1 metre per second per second. It is named after the English
      * mathematician and physicist Sir Isaac Newton (1642-1727).
      */
-    public static final AlternateUnit<Force> NEWTON = si(new AlternateUnit<Force>(
-            "Newton", "N", METRE.multiply(KILOGRAM).divide(SECOND.pow(2))));
+    public static final Unit<Force> NEWTON = addUnit(new AlternateUnit<Force>(
+            "N", METRE.multiply(KILOGRAM).divide(SECOND.pow(2))));
 
     /**
      * The derived unit for pressure, stress (<code>Pa</code>).
      * One pascal is equal to one newton per square meter. It is named after
      * the French philosopher and mathematician Blaise Pascal (1623-1662).
      */
-    public static final AlternateUnit<Pressure> PASCAL = si(new AlternateUnit<Pressure>(
+    public static final Unit<Pressure> PASCAL = addUnit(new AlternateUnit<Pressure>(
             "Pa", NEWTON.divide(METRE.pow(2))));
 
     /**
@@ -197,7 +223,7 @@ public final class MetricSystem extends SystemOfUnits {
      * moves through a distance of 1 metre in the direction of the force.
      * It is named after the English physicist James Prescott Joule (1818-1889).
      */
-    public static final AlternateUnit<Energy> JOULE = si(new AlternateUnit<Energy>(
+    public static final Unit<Energy> JOULE = addUnit(new AlternateUnit<Energy>(
             "J", NEWTON.multiply(METRE)));
 
     /**
@@ -205,7 +231,7 @@ public final class MetricSystem extends SystemOfUnits {
      * One watt is equal to one joule per second. It is named after the British
      * scientist James Watt (1736-1819).
      */
-    public static final AlternateUnit<Power> WATT = si(new AlternateUnit<Power>(
+    public static final Unit<Power> WATT = addUnit(new AlternateUnit<Power>(
             "W", JOULE.divide(SECOND)));
 
     /**
@@ -215,7 +241,7 @@ public final class MetricSystem extends SystemOfUnits {
      * by a steady current of one ampere. It is named after the French physicist
      * Charles Augustin de Coulomb (1736-1806).
      */
-    public static final AlternateUnit<Electric.Charge> COULOMB = si(new AlternateUnit<Electric.Charge>(
+    public static final Unit<ElectricCharge> COULOMB = addUnit(new AlternateUnit<ElectricCharge>(
             "C", SECOND.multiply(AMPERE)));
 
     /**
@@ -226,8 +252,8 @@ public final class MetricSystem extends SystemOfUnits {
      * when the power dissipated between the points is one watt. It is named
      * after the Italian physicist Count Alessandro Volta (1745-1827).
      */
-    public static final AlternateUnit<Electric.Potential> VOLT = si(new AlternateUnit<Electric.Potential>(
-            "Volt", "V", WATT.divide(AMPERE)));
+    public static final Unit<ElectricPotential> VOLT = addUnit(new AlternateUnit<ElectricPotential>(
+            "V", WATT.divide(AMPERE)));
 
     /**
      * The derived unit for capacitance (<code>F</code>).
@@ -236,7 +262,7 @@ public final class MetricSystem extends SystemOfUnits {
      * of 1 volt between the plates. It is named after the British physicist
      * and chemist Michael Faraday (1791-1867).
      */
-    public static final AlternateUnit<Electric.Capacitance> FARAD = si(new AlternateUnit<Electric.Capacitance>(
+    public static final Unit<ElectricCapacitance> FARAD = addUnit(new AlternateUnit<ElectricCapacitance>(
             "F", COULOMB.divide(VOLT)));
 
     /**
@@ -245,15 +271,15 @@ public final class MetricSystem extends SystemOfUnits {
      * one ampere is produced by a potential of one volt across its terminals.
      * It is named after the German physicist Georg Simon Ohm (1789-1854).
      */
-    public static final AlternateUnit<Electric.Resistance> OHM = si(new AlternateUnit<Electric.Resistance>(
-            "Ohm", "Ω", VOLT.divide(AMPERE)));
+    public static final Unit<ElectricResistance> OHM = addUnit(new AlternateUnit<ElectricResistance>(
+            "Ω", VOLT.divide(AMPERE)));
 
     /**
      * The derived unit for electric conductance (<code>S</code>).
      * One Siemens is equal to one ampere per volt. It is named after
      * the German engineer Ernst Werner von Siemens (1816-1892).
      */
-    public static final AlternateUnit<Electric.Conductance> SIEMENS = si(new AlternateUnit<Electric.Conductance>(
+    public static final Unit<ElectricConductance> SIEMENS = addUnit(new AlternateUnit<ElectricConductance>(
             "S", AMPERE.divide(VOLT)));
 
     /**
@@ -263,7 +289,7 @@ public final class MetricSystem extends SystemOfUnits {
      * reduced to zero within one second. It is named after the German physicist
      * Wilhelm Eduard Weber (1804-1891).
      */
-    public static final AlternateUnit<Magnetic.Flux> WEBER = si(new AlternateUnit<Magnetic.Flux>(
+    public static final Unit<MagneticFlux> WEBER = addUnit(new AlternateUnit<MagneticFlux>(
             "Wb", VOLT.multiply(SECOND)));
 
     /**
@@ -272,7 +298,7 @@ public final class MetricSystem extends SystemOfUnits {
      * after the Serbian-born American electrical engineer and physicist
      * Nikola Tesla (1856-1943).
      */
-    public static final AlternateUnit<Magnetic.FluxDensity> TESLA = si(new AlternateUnit<Magnetic.FluxDensity>(
+    public static final Unit<MagneticFluxDensity> TESLA = addUnit(new AlternateUnit<MagneticFluxDensity>(
             "T", WEBER.divide(METRE.pow(2))));
 
     /**
@@ -282,7 +308,7 @@ public final class MetricSystem extends SystemOfUnits {
      * one ampere per second. It is named after the American physicist
      * Joseph Henry (1791-1878).
      */
-    public static final AlternateUnit<Electric.Inductance> HENRY = si(new AlternateUnit<Electric.Inductance>(
+    public static final Unit<ElectricInductance> HENRY = addUnit(new AlternateUnit<ElectricInductance>(
             "H", WEBER.divide(AMPERE)));
 
     /**
@@ -291,21 +317,21 @@ public final class MetricSystem extends SystemOfUnits {
      * (at one atmosphere of pressure) is 0 Cel, while the boiling point is
      * 100 Cel.
      */
-    public static final Unit<Temperature> CELSIUS = si(KELVIN.add(273.15));
+    public static final Unit<Temperature> CELSIUS = addUnit(KELVIN.add(273.15));
 
     /**
      * The derived unit for luminous flux (<code>lm</code>).
      * One Lumen is equal to the amount of light given out through a solid angle
      * by a source of one candela intensity radiating equally in all directions.
      */
-    public static final AlternateUnit<Luminous.Flux> LUMEN = si(new AlternateUnit<Luminous.Flux>(
+    public static final Unit<LuminousFlux> LUMEN = addUnit(new AlternateUnit<LuminousFlux>(
             "lm", CANDELA.multiply(STERADIAN)));
 
     /**
      * The derived unit for illuminance (<code>lx</code>).
      * One Lux is equal to one lumen per square metre.
      */
-    public static final AlternateUnit<Illuminance> LUX = si(new AlternateUnit<Illuminance>(
+    public static final Unit<Illuminance> LUX = addUnit(new AlternateUnit<Illuminance>(
             "lx", LUMEN.divide(METRE.pow(2))));
 
     /**
@@ -314,7 +340,7 @@ public final class MetricSystem extends SystemOfUnits {
      * It is named after the French physicist, Antoine-Henri Becquerel
      * (1852-1908).
      */
-    public static final AlternateUnit<Radiation.RadioactiveActivity> BECQUEREL = si(new AlternateUnit<Radiation.RadioactiveActivity>(
+    public static final Unit<RadioactiveActivity> BECQUEREL = addUnit(new AlternateUnit<RadioactiveActivity>(
             "Bq", Unit.ONE.divide(SECOND)));
 
     /**
@@ -324,7 +350,7 @@ public final class MetricSystem extends SystemOfUnits {
      * kilogram of matter. It is named after the British physician
      * L. H. Gray (1905-1965).
      */
-    public static final AlternateUnit<Radiation.DoseAbsorbed> GRAY = si(new AlternateUnit<Radiation.DoseAbsorbed>(
+    public static final Unit<RadiationDoseAbsorbed> GRAY = addUnit(new AlternateUnit<RadiationDoseAbsorbed>(
             "Gy", JOULE.divide(KILOGRAM)));
 
     /**
@@ -334,13 +360,13 @@ public final class MetricSystem extends SystemOfUnits {
      * radiation. It is named after the Swedish physicist Rolf Sievert
      * (1898-1966).
      */
-    public static final AlternateUnit<Radiation.DoseEffective> SIEVERT = si(new AlternateUnit<Radiation.DoseEffective>(
-            "Sievert", "Sv", JOULE.divide(KILOGRAM)));
+    public static final Unit<RadiationDoseEffective> SIEVERT = addUnit(new AlternateUnit<RadiationDoseEffective>(
+            "Sv", JOULE.divide(KILOGRAM)));
 
     /**
      * The derived unit for catalytic activity (<code>kat</code>).
      */
-    public static final AlternateUnit<CatalyticActivity> KATAL = si(new AlternateUnit<CatalyticActivity>(
+    public static final Unit<CatalyticActivity> KATAL = addUnit(new AlternateUnit<CatalyticActivity>(
             "kat", MOLE.divide(SECOND)));
     //////////////////////////////
     // SI DERIVED PRODUCT UNITS //
@@ -350,41 +376,28 @@ public final class MetricSystem extends SystemOfUnits {
      * The metric unit for velocity quantities (<code>m/s</code>).
      *
      */
-    public static final Unit<Velocity> METRES_PER_SECOND = si(new ProductUnit<Velocity>(
+    public static final Unit<Velocity> METRES_PER_SECOND = addUnit(new ProductUnit<Velocity>(
             METRE.divide(SECOND)));
 
     /**
      * The metric unit for acceleration quantities (<code>m/s2</code>).
      */
-    public static final Unit<Acceleration> METRES_PER_SQUARE_SECOND = si(new ProductUnit<Acceleration>(
+    public static final Unit<Acceleration> METRES_PER_SQUARE_SECOND = addUnit(new ProductUnit<Acceleration>(
             METRES_PER_SECOND.divide(SECOND)));
 
     /**
      * The metric unit for area quantities (<code>m2</code>).
      */
-    public static final Unit<Area> SQUARE_METRE = si(new ProductUnit<Area>(
+    public static final Unit<Area> SQUARE_METRE = addUnit(new ProductUnit<Area>(
             METRE.multiply(METRE)));
 
     /**
      * The metric unit for volume quantities (<code>m3</code>).
      */
-    public static final Unit<Volume> CUBIC_METRE = si(new ProductUnit<Volume>(
+    public static final Unit<Volume> CUBIC_METRE = addUnit(new ProductUnit<Volume>(
             SQUARE_METRE.multiply(METRE)));
 
-    /**
-     * Equivalent to <code>KILO(METRE)</code>.
-     */
-    public static final Unit<Length> KILOMETRE = METRE.multiply(1000);
-
-    /**
-     * Equivalent to <code>CENTI(METRE)</code>.
-     */
-    public static final Unit<Length> CENTIMETRE = METRE.divide(100);
-
-    /**
-     * Equivalent to <code>MILLI(METRE)</code>.
-     */
-    public static final Unit<Length> MILLIMETRE = METRE.divide(1000);
+   
 
     /////////////////////
     // Collection View //
@@ -404,8 +417,309 @@ public final class MetricSystem extends SystemOfUnits {
      * @param  unit the unit being added.
      * @return <code>unit</code>.
      */
-    private static <U extends Unit<?>> U si(U unit) {
+    private static <U extends Unit<?>>  U addUnit(U unit) {
         UNITS.add(unit);
         return unit;
     }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>24</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e24)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> YOTTA(Unit<Q> unit) {
+        return unit.transform(E24);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>21</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e21)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> ZETTA(Unit<Q> unit) {
+        return unit.transform(E21);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>18</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e18)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> EXA(Unit<Q> unit) {
+        return unit.transform(E18);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>15</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e15)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> PETA(Unit<Q> unit) {
+        return unit.transform(E15);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>12</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e12)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> TERA(Unit<Q> unit) {
+        return unit.transform(E12);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>9</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e9)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> GIGA(Unit<Q> unit) {
+        return unit.transform(E9);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>6</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e6)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> MEGA(Unit<Q> unit) {
+        return unit.transform(E6);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>3</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e3)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> KILO(Unit<Q> unit) {
+        return unit.transform(E3);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>2</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e2)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> HECTO(Unit<Q> unit) {
+        return unit.transform(E2);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>1</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e1)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> DEKA(Unit<Q> unit) {
+        return unit.transform(E1);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-1</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-1)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> DECI(Unit<Q> unit) {
+        return unit.transform(Em1);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-2</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-2)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> CENTI(Unit<Q> unit) {
+        return unit.transform(Em2);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-3</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-3)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> MILLI(Unit<Q> unit) {
+        return unit.transform(Em3);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-6</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-6)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> MICRO(Unit<Q> unit) {
+        return unit.transform(Em6);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-9</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-9)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> NANO(Unit<Q> unit) {
+        return unit.transform(Em9);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-12</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-12)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> PICO(Unit<Q> unit) {
+        return unit.transform(Em12);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-15</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-15)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> FEMTO(Unit<Q> unit) {
+        return unit.transform(Em15);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-18</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-18)</code>.
+     */
+    public static final <Q extends Quantity<Q>> Unit<Q> ATTO(Unit<Q> unit) {
+        return unit.transform(Em18);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-21</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-21)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> ZEPTO(Unit<Q> unit) {
+        return unit.transform(Em21);
+    }
+
+    /**
+     * Returns the specified unit multiplied by the factor
+     * <code>10<sup>-24</sup></code>
+     *
+     * @param <Q> The type of the quantity measured by the unit.
+     * @param unit any unit.
+     * @return <code>unit.times(1e-24)</code>.
+     */
+    public static <Q extends Quantity<Q>> Unit<Q> YOCTO(Unit<Q> unit) {
+        return unit.transform(Em24);
+    }
+    // Holds prefix converters (optimization).
+    private static final RationalConverter E24 = new RationalConverter(
+            BigInteger.TEN.pow(24), BigInteger.ONE);
+
+    private static final RationalConverter E21 = new RationalConverter(
+            BigInteger.TEN.pow(21), BigInteger.ONE);
+
+    private static final RationalConverter E18 = new RationalConverter(
+            BigInteger.TEN.pow(18), BigInteger.ONE);
+
+    private static final RationalConverter E15 = new RationalConverter(
+            BigInteger.TEN.pow(15), BigInteger.ONE);
+
+    private static final RationalConverter E12 = new RationalConverter(
+            BigInteger.TEN.pow(12), BigInteger.ONE);
+
+    private static final RationalConverter E9 = new RationalConverter(
+            BigInteger.TEN.pow(9), BigInteger.ONE);
+
+    private static final RationalConverter E6 = new RationalConverter(
+            BigInteger.TEN.pow(6), BigInteger.ONE);
+
+    private static final RationalConverter E3 = new RationalConverter(
+            BigInteger.TEN.pow(3), BigInteger.ONE);
+
+    private static final RationalConverter E2 = new RationalConverter(
+            BigInteger.TEN.pow(2), BigInteger.ONE);
+
+    private static final RationalConverter E1 = new RationalConverter(
+            BigInteger.TEN.pow(1), BigInteger.ONE);
+
+    private static final RationalConverter Em1 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(1));
+
+    private static final RationalConverter Em2 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(2));
+
+    private static final RationalConverter Em3 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(3));
+
+    private static final RationalConverter Em6 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(6));
+
+    private static final RationalConverter Em9 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(9));
+
+    private static final RationalConverter Em12 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(12));
+
+    private static final RationalConverter Em15 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(15));
+
+    private static final RationalConverter Em18 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(18));
+
+    private static final RationalConverter Em21 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(21));
+
+    private static final RationalConverter Em24 = new RationalConverter(
+            BigInteger.ONE, BigInteger.TEN.pow(24));
+
 }

@@ -7,11 +7,10 @@
 package javax.measure.unit;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
-import javax.measure.Dimension;
-import javax.measure.Quantity;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
+import javax.measure.quantity.Quantity;
 
 /**
  * <p>  This class represents units formed by the product of rational powers of
@@ -25,17 +24,20 @@ import javax.measure.UnitConverter;
  *
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 127 $), $Date: 2010-02-17 10:13:47 +0100 (Mi, 17 Feb 2010) $
+ * @version 1.1 ($Revision: 195 $), $Date: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
  * @see Unit#multiply(Unit)
  * @see Unit#divide(Unit)
  * @see Unit#pow(int)
  * @see Unit#root(int)
  */
-public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
-    /** The serialVersionUID */
-    private static final long serialVersionUID = 1649531873171667706L;
+final class ProductUnit<Q extends Quantity<Q>> extends Unit<Q> {
 
     /**
+	 * For cross-version compatibility.
+	 */
+	private static final long serialVersionUID = -736056598162783537L;
+
+	/**
      * Holds the units composing this product unit.
      */
     private final Element[] elements;
@@ -79,7 +81,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @return the corresponding unit.
      */
     @SuppressWarnings("unchecked")
-    private static Unit<? extends Quantity> getInstance(Element[] leftElems,
+    private static Unit<? extends Quantity<?>> getInstance(Element[] leftElems,
             Element[] rightElems) {
 
         // Merges left elements with right elements.
@@ -130,7 +132,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
             for (int i = 0; i < resultIndex; i++) {
                 elems[i] = result[i];
             }
-            return new ProductUnit<Quantity>(elems);
+            return new ProductUnit(elems);
         }
     }
 
@@ -141,7 +143,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @param right the right unit operand.
      * @return <code>left * right</code>
      */
-    public static Unit<? extends Quantity> getProductInstance(Unit<?> left,
+    public static Unit<? extends Quantity<?>> getProductInstance(Unit<?> left,
             Unit<?> right) {
         Element[] leftElems;
         if (left instanceof ProductUnit<?>)
@@ -163,7 +165,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @param right the divisor unit operand.
      * @return <code>dividend / divisor</code>
      */
-    public static Unit<? extends Quantity> getQuotientInstance(Unit<?> left,
+    public static Unit<? extends Quantity<?>> getQuotientInstance(Unit<?> left,
             Unit<?> right) {
         Element[] leftElems;
         if (left instanceof ProductUnit<?>)
@@ -192,7 +194,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @return <code>unit^(1/nn)</code>
      * @throws ArithmeticException if <code>n == 0</code>.
      */
-    public static Unit<? extends Quantity> getRootInstance(Unit<?> unit, int n) {
+    public static Unit<? extends Quantity<?>> getRootInstance(Unit<?> unit, int n) {
         Element[] unitElems;
         if (unit instanceof ProductUnit<?>) {
             Element[] elems = ((ProductUnit<?>) unit).elements;
@@ -215,7 +217,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @param nn the exponent (nn &gt; 0).
      * @return <code>unit^n</code>
      */
-    static Unit<? extends Quantity> getPowInstance(Unit<?> unit, int n) {
+    static Unit<? extends Quantity<?>> getPowInstance(Unit<?> unit, int n) {
         Element[] unitElems;
         if (unit instanceof ProductUnit<?>) {
             Element[] elems = ((ProductUnit<?>) unit).elements;
@@ -246,7 +248,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @throws IndexOutOfBoundsException if index is out of range
      *         <code>(index &lt; 0 || index &gt;= getUnitCount())</code>.
      */
-    public Unit<? extends Quantity> getUnit(int index) {
+    public Unit<? extends Quantity<?>> getUnit(int index) {
         return elements[index].getUnit();
     }
 
@@ -272,6 +274,15 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      */
     public int getUnitRoot(int index) {
         return elements[index].getRoot();
+    }
+
+    @Override
+    public Map<Unit<?>, Integer> getProductUnits() {
+        HashMap<Unit<?>, Integer> units = new HashMap<Unit<?>, Integer>();
+        for (int i = 0; i < getUnitCount(); i++) {
+            units.put(getUnit(i), getUnitPow(i));
+        }
+        return units;
     }
 
     @Override
@@ -317,12 +328,12 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Unit<Q> toSI() {
-        if (hasOnlyStandardUnit())
+    public Unit<Q> toMetric() {
+        if (hasOnlyUnscaledMetricUnits())
             return this;
         Unit<?> systemUnit = ONE;
         for (int i = 0; i < elements.length; i++) {
-            Unit<?> unit = elements[i].unit.toSI();
+            Unit<?> unit = elements[i].unit.toMetric();
             unit = unit.pow(elements[i].pow);
             unit = unit.root(elements[i].root);
             systemUnit = systemUnit.multiply(unit);
@@ -331,13 +342,13 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
     }
 
     @Override
-    public final UnitConverter getConverterToSI() {
-        if (hasOnlyStandardUnit()) // Product of standard units is a standard unit itself.
+    public final UnitConverter getConverterToMetric() {
+        if (hasOnlyUnscaledMetricUnits()) // Product of standard units is a standard unit itself.
             return UnitConverter.IDENTITY;
         UnitConverter converter = UnitConverter.IDENTITY;
         for (int i = 0; i < elements.length; i++) {
             Element e = elements[i];
-            UnitConverter cvtr = e.unit.getConverterToSI();
+            UnitConverter cvtr = e.unit.getConverterToMetric();
             if (!(cvtr.isLinear()))
                 throw new UnsupportedOperationException(e.unit + " is non-linear, cannot convert");
             if (e.root != 1)
@@ -360,10 +371,10 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
      * @return <code>true</code> if all elements are standard units;
      *         <code>false</code> otherwise.
      */
-    private boolean hasOnlyStandardUnit() {
+    private boolean hasOnlyUnscaledMetricUnits() {
         for (int i = 0; i < elements.length; i++) {
             Unit<?> u = elements[i].unit;
-            if (!u.isSI())
+            if (!u.isUnscaledMetric())
                 return false;
         }
         return true;
@@ -402,7 +413,7 @@ public final class ProductUnit<Q extends Quantity> extends DerivedUnit<Q> {
         return converter;
     }
 
-     /**
+    /**
      * Returns the greatest common divisor (Euclid's algorithm).
      *
      * @param m the first number.

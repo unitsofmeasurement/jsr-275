@@ -7,10 +7,9 @@
 package javax.measure.unit;
 
 import static org.junit.Assert.*;
+import static javax.measure.util.TestUtil.*;
 
-import javax.measure.Quantity;
-import javax.measure.Unit;
-import javax.measure.UnitConverter;
+import javax.measure.quantity.Quantity;
 import javax.measure.quantity.Dimensionless;
 
 import org.junit.After;
@@ -20,7 +19,7 @@ import org.junit.Test;
 
 /**
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version $Revision: 126 $, $LastChangedDate: 2010-02-17 09:41:38 +0100 (Mi, 17 Feb 2010) $
+ * @version $Revision: 195 $, $LastChangedDate: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
  */
 public class UnitTest {
     Unit<Dimensionless> one;
@@ -46,12 +45,12 @@ public class UnitTest {
     }
 
     /**
-     * Test method for {@link javax.measure.unit.Unit#toSI()}.
+     * Test method for {@link javax.measure.unit.Unit#toMetric()}.
      */
     @Test
-    public void testToSI() {
-        Unit<? extends Quantity> su = one.toSI();
-        assertTrue(su.isSI());
+    public void testToMetric() {
+        Unit<? extends Quantity> su = one.toMetric();
+        assertTrue(su.isUnscaledMetric());
     }
 
     /**
@@ -61,27 +60,33 @@ public class UnitTest {
     public void testConverterToSI() {
         Double factor = new Double(10);
         UnitConverter converter = one.getConverterTo(one);
-        Double result = converter.convert(factor);
+        Double result = converter.convert(factor.doubleValue());
         assertEquals(result, factor);
-        //System.out.println(result);
+        print(result.toString());
     }
 
     /**
-     * Test method for {@link javax.measure.unit.Unit#isSI()}.
+     * Test method for {@link javax.measure.unit.Unit#isMetric()}.
      */
     @Test
-    public void testIsStandard() {
-        boolean standard = one.isSI();
+    public void testIsMetric() {
+        boolean standard = one.isUnscaledMetric();
         assertTrue(standard);
     }
 
     /**
      * Test method for {@link javax.measure.unit.Unit#asType(java.lang.Class)}.
      */
-//  @Test
-//  public void testAsType() {
-//      one.asType(Dimensionless.class);
-//  }
+  @Test
+  public void testAsType() {
+      one.asType(Dimensionless.class);
+      try {
+          MetricSystem.METRE.asType(Dimensionless.class);
+          fail("Should have raised ClassCastException");
+      } catch (ClassCastException e) {
+          assertTrue(true);
+      }
+  }
 
     /**
      * Test method for {@link javax.measure.unit.Unit#getDimension()}.
@@ -109,7 +114,7 @@ public class UnitTest {
     }*/
 
     /**
-     * Test method for {@link javax.measure.unit.Unit#transform(javax.measure.converter.UnitConverter)}.
+     * Test method for {@link javax.measure.unit.Unit#transform}.
      */
     @Test
     public void testTransform() {
@@ -121,7 +126,7 @@ public class UnitTest {
      * Test method for {@link javax.measure.unit.Unit#add(double)}.
      */
     @Test
-    public void testPlus() {
+    public void testAdd() {
         Unit<? extends Quantity> result = one.add(10);
         assertNotSame(result, one);
     }
@@ -129,8 +134,9 @@ public class UnitTest {
     /**
      * Test method for {@link javax.measure.unit.Unit#multiply(long)}.
      */
-    @Test
-    public void testTimesLong() {
+    @SuppressWarnings("unchecked")
+	@Test
+    public void testMultiplyLong() {
         Unit<? extends Quantity> result = one.multiply(2L);
         assertNotSame(result, one);
     }
@@ -139,7 +145,7 @@ public class UnitTest {
      * Test method for {@link javax.measure.unit.Unit#multiply(double)}.
      */
     @Test
-    public void testTimesDouble() {
+    public void testMultiplyDouble() {
         Unit<? extends Quantity> result = one.multiply(2.1);
         assertNotSame(result, one);
     }
@@ -148,7 +154,7 @@ public class UnitTest {
      * Test method for {@link javax.measure.unit.Unit#multiply(javax.measure.unit.Unit)}.
      */
     @Test
-    public void testTimesUnitOfQ() {
+    public void testMultiplyUnitOfQ() {
         Unit<? extends Quantity> result = one.multiply(one);
         assertEquals(result, one);
     }
