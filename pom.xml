@@ -3,10 +3,10 @@
         Maven Project Configuration File
 
         The JSR-275 Project
-            https://jsr-275.dev.java.net/
+            https://kenai.com/projects/jsr-275
      ======================================================================= -->
 
-<!-- $Id: pom.xml 244 2011-11-13 18:15:56Z keilw $ -->
+<!-- $Id: pom.xml 51 2009-11-16 10:54:39Z dautelle $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -19,15 +19,15 @@
 
 
 
-    <!-- ==================================================== -->
-    <!--     Project description (including license)          -->
-    <!-- ==================================================== -->
+  <!-- ==================================================== -->
+  <!--     Project description (including license)          -->
+  <!-- ==================================================== -->
     <groupId>javax.measure</groupId>
     <artifactId>jsr-275</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.6</version>
+    <version>0.9.2</version>
     <name>JSR-275</name>
-    <url>https://jsr-275.dev.java.net/</url>
+    <url>https://kenai.com/projects/jsr-275</url>
 
     <description>
     JSR-275 specifies Java packages for the programmatic handling
@@ -49,9 +49,9 @@
 
 
 
-    <!-- =========================================================== -->
-    <!--     Issue managements and mailing lists.                    -->
-    <!-- =========================================================== -->
+  <!-- =========================================================== -->
+  <!--     Issue managements and mailing lists.                    -->
+  <!-- =========================================================== -->
     <scm>
         <url>https://kenai.com/svn/jsr-275~svn-repository/trunk</url>
         <connection>scm:svn:https://kenai.com/svn/jsr-275~svn-repository/trunk</connection>
@@ -61,10 +61,6 @@
         <system>JIRA</system>
         <url>http://kenai.com/jira/browse/JSR_275</url>
     </issueManagement>
-    <ciManagement>
-    	<system>Hudson</system>
-    	<url>http://hudson.geomatys.com/job/JSR-275/</url>
-    </ciManagement>
 
     <mailingLists>
         <mailingList>
@@ -75,9 +71,9 @@
 
 
 
-    <!-- =========================================================== -->
-    <!--     Developers and Contributors                             -->
-    <!-- =========================================================== -->
+  <!-- =========================================================== -->
+  <!--     Developers and Contributors                             -->
+  <!-- =========================================================== -->
     <developers>
         <developer>
             <name>Jean-Marie Dautelle</name>
@@ -155,7 +151,10 @@
                 <role>Java Developer</role>
             </roles>
         </developer>
-        <developer>
+    </developers>
+
+    <contributors>
+        <contributor>
             <name>Daniel Leuck</name>
             <organization>Ikayzo</organization>
             <email>dan@ikayzo.com</email>
@@ -163,60 +162,11 @@
             <roles>
                 <role>EG Member</role>
                 <role>Repository Admin</role>
-                <role>Globalization Support</role>
-            </roles>
-        </developer>
-    </developers>
-
-    <contributors>
-        <contributor>
-            <name>Scott Murphy</name>
-            <organization>Ikayzo</organization>
-            <email>scott@ikayzo.com</email>
-            <timezone>-9</timezone>
-            <roles>
-                <role>Translator</role>
-                <role>Japanese</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Mika Terada</name>
-            <organization>Ikayzo</organization>
-            <email>mika@ikayzo.com</email>
-            <timezone>-9</timezone>
-            <roles>
-                <role>Translator</role>
-                <role>Japanese</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Anatol Filin</name>
-            <organization>Gramant</organization>
-            <email>anatol@gramant.ru</email>
-            <timezone>+4</timezone>
-            <roles>
-                <role>Translator</role>
-                <role>Russian</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Steven Coco</name>
-            <email>coco@stevencoco.com</email>
-            <roles>
-                <role>EG Member</role>
-            </roles>
-        </contributor>
-        <contributor>
-            <name>Deepak Dasaratha Rao</name>
-            <organization>Samsung Electronics Corporation</organization>
-            <email>deepakd@samsung.com</email>
-            <roles>
-                <role>EG Member</role>
             </roles>
         </contributor>
         <contributor>
             <name>Brian Frank</name>
-            <organization>Tridium, Inc</organization>
+            <organization>Tridium</organization>
             <email>bfrank@tridium.com</email>
             <roles>
                 <role>EG Member</role>
@@ -260,38 +210,39 @@
         </contributor>
     </contributors>
 
-    <!-- =========================================================== -->
-    <!--     Dependency Management                                   -->
-    <!--                                                             -->
-    <!--     Reference: http://repo1.maven.org/maven2/               -->
-    <!-- =========================================================== -->
+
+
+  <!-- =========================================================== -->
+  <!--     Dependency Management                                   -->
+  <!--                                                             -->
+  <!--     Reference: http://repo1.maven.org/maven2/               -->
+  <!-- =========================================================== -->
     <dependencies>
         <dependency> <!-- Validation tests -->
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.7</version>
+            <version>3.8.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
 
-    <!-- ======================================================= -->
-    <!--     Build Settings                                      -->
-    <!-- ======================================================= -->
+
+  <!-- ======================================================= -->
+  <!--     Build Settings                                      -->
+  <!-- ======================================================= -->
     <properties>
         <sourceEncoding>UTF-8</sourceEncoding> <!-- in Maven 3. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <build>
-    	<resources>
-    	</resources>
         <filters>
         </filters>
         <plugins>
 
-            <!-- ======================================================= -->
-            <!--     Pre-Compilation                                     -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Pre-Compilation                                     -->
+      <!-- ======================================================= -->        
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>javacc-maven-plugin</artifactId>
@@ -310,9 +261,9 @@
                 </executions>
             </plugin>
 
-            <!-- ======================================================= -->
-            <!--     License                                             -->
-            <!-- ======================================================= 
+      <!-- ======================================================= -->
+      <!--     License                                             -->
+      <!-- ======================================================= -->	      
             <plugin>
                 <groupId>com.google.code.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
@@ -334,13 +285,10 @@
                     </execution>
                 </executions>
             </plugin>
-             TODO enable this only for major upgrades
-            (ensure to copy LICENSE.txt to LICENSE.bak first)
-            -->
-      
-            <!-- ======================================================= -->
-            <!--     Compilation                                         -->
-            <!-- ======================================================= -->
+		  
+      <!-- ======================================================= -->
+      <!--     Compilation                                         -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -351,9 +299,9 @@
                 </configuration>
             </plugin>
 
-            <!-- ======================================================= -->
-            <!--     Resources                                           -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Resources                                           -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -362,9 +310,9 @@
                 </configuration>
             </plugin>
 
-            <!-- ======================================================= -->
-            <!--     Custom Javadoc plugin                               -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Custom Javadoc plugin                               -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.javolution</groupId>
                 <artifactId>colapi</artifactId>
@@ -377,10 +325,10 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <!-- ======================================================= -->
-            <!--     Packaging                                           -->
-            <!-- ======================================================= -->
+            
+      <!-- ======================================================= -->
+      <!--     Packaging                                           -->
+      <!-- ======================================================= -->            
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -390,20 +338,20 @@
                         <manifestEntries>
                             <Implementation-Title>${project.name}</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
-	            			<!-- mode>development</mode> TODO call it stage?
+	            			<!-- mode>development</mode> TODO call it stage?              
 	            			<SCM-Revision>${buildNumber}</SCM-Revision-->
-                            <SCM-Revision>$Revision: 244 $</SCM-Revision>
+                            <SCM-Revision>$Revision: 51 $</SCM-Revision>
                         </manifestEntries>
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <manifestFile>src/main/java/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
 
-        <!-- ======================================================= -->
-        <!--     For deployment on dev.java.net subversion           -->
-        <!--     See https://wagon-svn.dev.java.net/                 -->
-        <!-- ======================================================= -->
+    <!-- ======================================================= -->
+    <!--     For deployment on dev.java.net subversion           -->
+    <!--     See https://wagon-svn.dev.java.net/                 -->
+    <!-- ======================================================= -->
         <extensions>
             <extension>
                 <groupId>org.jvnet.wagon-svn</groupId>
@@ -415,17 +363,17 @@
 
 
 
-    <!-- ======================================================= -->
-    <!--     Maven web site                                      -->
-    <!-- ======================================================= -->
+  <!-- ======================================================= -->
+  <!--     Maven web site                                      -->
+  <!-- ======================================================= -->
     <reporting>
         <plugins>
-            <!-- ======================================================= -->
-            <!--     Javadoc generation                                  -->
-            <!--                                                         -->
-            <!--     Do not set <docfilessubdirs> to true, since this    -->
-            <!--     cause the unwanted copy of .svn sub-directories.    -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Javadoc generation                                  -->
+      <!--                                                         -->
+      <!--     Do not set <docfilessubdirs> to true, since this    -->
+      <!--     cause the unwanted copy of .svn sub-directories.    -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -438,9 +386,9 @@
                     <noqualifier>all</noqualifier>   <!-- Omit qualifying package name before class names in output. -->
                     <quiet>true</quiet>              <!-- Shuts off non-error and non-warning messages.              -->
                     <keywords>true</keywords>        <!-- Adds HTML meta keyword tags to the generated files.        -->
-                    <excludePackageNames>javax.measure.unit.format:javax.measure.unit.converter:javax.measure.util</excludePackageNames>
-                    <!-- Creates links to existing javadoc-generated   -->
-                    <!-- documentation of external referenced classes. -->
+
+          <!-- Creates links to existing javadoc-generated   -->
+          <!-- documentation of external referenced classes. -->
                     <links>
                         <link>http://java.sun.com/javase/6/docs/api</link>
                     </links>
@@ -448,9 +396,9 @@
             </plugin>
 
 
-            <!-- ======================================================= -->
-            <!--     Code analysis                                       -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Code analysis                                       -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
@@ -461,18 +409,18 @@
             </plugin>
 
 
-            <!-- ======================================================= -->
-            <!--     Report on test results                              -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Report on test results                              -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-report-plugin</artifactId>
             </plugin>
 
 
-            <!-- ======================================================= -->
-            <!--     Report on test coverage                             -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Report on test coverage                             -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>emma-maven-plugin</artifactId>
@@ -480,9 +428,9 @@
             </plugin>
 
 
-            <!-- ======================================================= -->
-            <!--     Static analysis for occurences of bug patterns      -->
-            <!-- ======================================================= -->
+      <!-- ======================================================= -->
+      <!--     Static analysis for occurences of bug patterns      -->
+      <!-- ======================================================= -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
@@ -493,10 +441,10 @@
 
 
 
-    <!-- ================================================================== -->
-    <!--     Repositories. This is where Maven looks for dependencies. The  -->
-    <!--     Maven repository is implicit and doesn't need to be specified. -->
-    <!-- ================================================================== -->
+  <!-- ================================================================== -->
+  <!--     Repositories. This is where Maven looks for dependencies. The  -->
+  <!--     Maven repository is implicit and doesn't need to be specified. -->
+  <!-- ================================================================== -->
     <pluginRepositories>
         <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
@@ -507,9 +455,9 @@
 
 
 
-    <!-- ==================================================== -->
-    <!--     Deployment to public servers                     -->
-    <!-- ==================================================== -->
+  <!-- ==================================================== -->
+  <!--     Deployment to public servers                     -->
+  <!-- ==================================================== -->
     <distributionManagement>
         <repository>
             <id>java.net-maven2-repository</id>

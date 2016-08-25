@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Vendor: JScience
+Bundle-SymbolicName: javax.measure
+Bundle-Name: Measures and Units
+Bundle-Version: 0.9.2
+Export-Package: javax.measure,
+ javax.measure.converter,
+ javax.measure.quantity,
+ javax.measure.unit,
+ javax.measure.unit.format
+
