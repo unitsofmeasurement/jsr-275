@@ -29,9 +29,9 @@ import javax.measure.unit.UnitConverter;
  * @param <Q> The type of the quantity measured by this unit.
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 187 $), $Date: 2010-02-24 12:34:43 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.0.1 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
-final class TransformedUnit<Q extends Quantity<Q>> extends Unit<Q> {
+public final class TransformedUnit<Q extends Quantity<Q>> extends Unit<Q> {
   
     /**
 	 * For cross-version compatibility.

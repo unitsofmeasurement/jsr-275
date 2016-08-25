@@ -4,7 +4,7 @@
  *
  *   See LICENSE.txt for the Specification License
  */
-package javax.measure;
+package javax.measure.util;
 
 import static javax.measure.unit.MetricSystem.KILOGRAM;
 import static javax.measure.unit.MetricSystem.METRE;
@@ -16,7 +16,7 @@ import javax.measure.quantity.QuantityFactory;
 /**
  * @author <a href="mailto:desruisseaux@users.sourceforge.net">Martin Desruisseaux</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 0.2 ($Revision: 168 $), $Date: 2010-02-21 18:08:37 +0100 (So, 21 Feb 2010) $
+ * @version 0.2 ($Revision: 210 $), $Date: 2010-02-25 23:34:46 +0100 (Do, 25 Feb 2010) $
  */
 public class Demo {
 

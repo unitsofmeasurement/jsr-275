@@ -10,14 +10,13 @@ import static javax.measure.util.TestUtil.*;
 import static org.junit.Assert.*;
 
 import javax.measure.quantity.Length;
-//import javax.measure.unit.NonSI;
 import javax.measure.quantity.QuantityFactory;
 import static javax.measure.unit.MetricSystem.*;
 
 import org.junit.Test;
 
 /**
- * @version $Revision: 180 $, $Date: 2010-02-23 16:11:17 +0100 (Di, 23 Feb 2010) $
+ * @version $Revision: 223 $, $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  * @author $Author: keilw $
  */
 public class UnitConversionTest {
@@ -59,10 +58,12 @@ public class UnitConversionTest {
                 operation = unit2 + " -> " + unit3;
                 print(operation);
             }
-            
+            double foot1 = converter.convert(m2.getValue().doubleValue());
+            double foot2 = m2.doubleValue(unit3);
+            assertEquals(Double.valueOf(foot1), Double.valueOf(foot2));
+            print(foot2);
         } catch (Exception e) {
             //reset = true;
-            //number = UI_ERR;
             fail(e.getMessage());
         }
     }

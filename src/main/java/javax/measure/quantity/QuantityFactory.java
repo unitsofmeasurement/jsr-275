@@ -11,6 +11,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.measure.unit.Unit;
 import static javax.measure.unit.MetricSystem.*;
 
@@ -18,7 +21,7 @@ import static javax.measure.unit.MetricSystem.*;
  * A factory producing simple quantities instances (tuples {@link Number}/{@link Unit}).
  *
  * For example:[code]
- *      Mass m = QuantityFactory.getInstance(Mass.class).create(23.0, KILOGRAM); // 23.0 Kg
+ *      Mass m = QuantityFactory.getInstance(Mass.class).create(23.0, KILOGRAM); // 23.0 kg
  *      Time m = QuantityFactory.getInstance(Time.class).create(124, MILLI(SECOND)); // 124 ms
  * [/code]
  * @param <Q> The type of the quantity.
@@ -26,7 +29,7 @@ import static javax.measure.unit.MetricSystem.*;
  * @author  <a href="mailto:desruisseaux@users.sourceforge.net">Martin Desruisseaux</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.5 ($Revision: 202 $), $Date: 2010-02-25 01:24:19 +0100 (Do, 25 Feb 2010) $
+ * @version 1.0.7 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
 public abstract class QuantityFactory<Q extends Quantity<Q>>  {
 
@@ -36,6 +39,8 @@ public abstract class QuantityFactory<Q extends Quantity<Q>>  {
     @SuppressWarnings("unchecked")
 	private static final ConcurrentHashMap<Class, QuantityFactory> INSTANCES = new ConcurrentHashMap<Class, QuantityFactory>();
 
+    private static final Logger logger = Logger.getLogger(QuantityFactory.class.getName());
+    
     /**
      * Returns the default instance for the specified quantity type.
      *
@@ -45,14 +50,31 @@ public abstract class QuantityFactory<Q extends Quantity<Q>>  {
      */
     @SuppressWarnings("unchecked")
 	public static <Q extends Quantity<Q>>  QuantityFactory<Q> getInstance(final Class<Q> type) {
-        QuantityFactory<Q> factory = INSTANCES.get(type);
-        if (factory != null) return factory;
-        if (!Quantity.class.isAssignableFrom(type)) 
-            // This exception is not documented because it should never happen if the
-            // user don't try to trick the Java generic types system with unsafe cast.
-            throw new ClassCastException();       
-        factory = new Default<Q>(type);
-        INSTANCES.put(type, factory);
+        
+         logger.log(Level.FINER, "Type: " + type + ": " + type.isInterface());
+         QuantityFactory<Q> factory;
+         if (!type.isInterface()) {
+        	 logger.log(Level.FINEST, "Type0: " + type.getInterfaces()[0]);
+             Class<?> type2 = type.getInterfaces()[0];
+
+             factory = INSTANCES.get(type2);
+            if (factory != null) return factory;
+            if (!Quantity.class.isAssignableFrom(type2))
+                // This exception is not documented because it should never happen if the
+                // user don't try to trick the Java generic types system with unsafe cast.
+                throw new ClassCastException();
+            factory = new Default<Q>((Class<Q>)type2);
+            INSTANCES.put(type2, factory);
+         } else {
+            factory = INSTANCES.get(type);
+            if (factory != null) return factory;
+            if (!Quantity.class.isAssignableFrom(type))
+                // This exception is not documented because it should never happen if the
+                // user don't try to trick the Java generic types system with unsafe cast.
+                throw new ClassCastException();
+            factory = new Default<Q>(type);
+            INSTANCES.put(type, factory);
+         }
         return factory;
     }
 
@@ -113,7 +135,8 @@ public abstract class QuantityFactory<Q extends Quantity<Q>>  {
          *
          * @param type The type of the quantities created by this factory.
          */
-        Default(final Class<Q> type) {
+        @SuppressWarnings("unchecked")
+		Default(final Class<Q> type) {
             this.type = type;
             metricUnit = CLASS_TO_METRIC_UNIT.get(type);
         }
@@ -161,6 +184,7 @@ public abstract class QuantityFactory<Q extends Quantity<Q>>  {
         @Override
         @SuppressWarnings("unchecked")
         public Q create(final Number value, final Unit<Q> unit) {
+            //System.out.println("Type: " + type);
             return (Q) Proxy.newProxyInstance(type.getClassLoader(),
                     new Class<?>[]{type}, new GenericHandler<Q>(value, unit));
         }
@@ -190,27 +214,19 @@ public abstract class QuantityFactory<Q extends Quantity<Q>>  {
             final String name = method.getName();
             if (name.equals("doubleValue")) { // Most frequent.
 	          final Unit<Q> toUnit = (Unit<Q>) args[0];
-	          if ((value instanceof Double) && ((toUnit == unit) || (toUnit.equals(unit))))
-	                return ((Double)value).doubleValue(); // Returns value directly.
+	          if ((toUnit == unit) || (toUnit.equals(unit)))
+	                return value.doubleValue(); // Returns value directly.
                   return unit.getConverterTo(toUnit).convert(value.doubleValue());
             } else if (name.equals("longValue")) { 
 	          final Unit<Q> toUnit = (Unit<Q>) args[0];
-	          if ((value instanceof Long) && ((toUnit == unit) || (toUnit.equals(unit))))
-	                return ((Long)value).doubleValue(); // Returns value directly.
+	          if ((toUnit == unit) || (toUnit.equals(unit)))
+	                return value.longValue(); // Returns value directly.
                   double doubleValue = unit.getConverterTo(toUnit).convert(value.doubleValue());
                   if ((doubleValue < Long.MIN_VALUE) || (doubleValue > Long.MAX_VALUE))
                       throw new ArithmeticException("Overflow: " + doubleValue + " cannot be represented as a long");
                   return (long) doubleValue;                
             } else if (name.equals("getValue")) {
-            	if (args == null) {
-            		return value;
-            	} else {
-        		  final Unit<Q> toUnit = (Unit<Q>) args[0];
-    	          if ((value instanceof Number) && ((toUnit == unit) || (toUnit.equals(unit)))) {
-    	              return value; // Returns value directly.
-    	          }
-                  return unit.getConverterTo(toUnit).convert(value);
-            	}
+                 return value;
             } else if (name.equals("getUnit")) {
                 return unit;
             } else if (name.equals("toString")) {

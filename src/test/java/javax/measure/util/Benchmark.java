@@ -1,4 +1,4 @@
-package javax.measure;
+package javax.measure.util;
 
 import java.util.Random;
 import javax.measure.quantity.Mass;

@@ -22,11 +22,11 @@ class UnitParser implements UnitParserConstants {
         }
     }
 
-    private SymbolMapImpl _symbols;
+    private SymbolMapImpl symbols;
 
     UnitParser (SymbolMapImpl symbols, java.io.Reader in) {
         this(in);
-        _symbols = symbols;
+        this.symbols = symbols;
     }
 
 //
@@ -265,12 +265,12 @@ class UnitParser implements UnitParserConstants {
       break;
     case UNIT_IDENTIFIER:
       token = jj_consume_token(UNIT_IDENTIFIER);
-        javax.measure.unit.Unit unit = _symbols.getUnit(token.image);
+        javax.measure.unit.Unit unit = symbols.getUnit(token.image);
         if (unit == null) {
-            ParsePrefix prefix = _symbols.getPrefix(token.image);
+            ParsePrefix prefix = symbols.getPrefix(token.image);
             if (prefix != null) {
-                String prefixSymbol = _symbols.getSymbol(prefix);
-                unit = _symbols.getUnit(token.image.substring(prefixSymbol.length()));
+                String prefixSymbol = symbols.getSymbol(prefix);
+                unit = symbols.getUnit(token.image.substring(prefixSymbol.length()));
                 if (unit != null) {
                     {if (true) return unit.transform(prefix.getConverter());}
                 }
@@ -539,7 +539,7 @@ class UnitParser implements UnitParserConstants {
   }
   /** Reinitialise. */
   private void reInit(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream.reInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.reInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -560,15 +560,15 @@ class UnitParser implements UnitParserConstants {
   }
 
   /** Reinitialise. */
-  private void reInit(java.io.Reader stream) {
-    jj_input_stream.ReInit(stream, 1, 1);
-    token_source.reInit(jj_input_stream);
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+//  private void reInit(java.io.Reader stream) {
+//    jj_input_stream.reInit(stream, 1, 1);
+//    token_source.reInit(jj_input_stream);
+//    token = new Token();
+//    jj_ntk = -1;
+//    jj_gen = 0;
+//    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+//    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+//  }
 
   /** Constructor with generated Token Manager. */
   UnitParser(UnitParserTokenManager tm) {
@@ -581,14 +581,14 @@ class UnitParser implements UnitParserConstants {
   }
 
   /** Reinitialise. */
-  private void reInit(UnitParserTokenManager tm) {
-    token_source = tm;
-    token = new Token();
-    jj_ntk = -1;
-    jj_gen = 0;
-    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
-    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
-  }
+//  private void reInit(UnitParserTokenManager tm) {
+//    token_source = tm;
+//    token = new Token();
+//    jj_ntk = -1;
+//    jj_gen = 0;
+//    for (int i = 0; i < 19; i++) jj_la1[i] = -1;
+//    for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
+//  }
 
   private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;

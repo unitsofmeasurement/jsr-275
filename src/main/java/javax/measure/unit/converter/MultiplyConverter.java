@@ -20,7 +20,7 @@ import javax.measure.unit.UnitConverter;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.4 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
+ * @version 1.4 ($Revision: 214 $), $Date: 2010-02-26 22:45:02 +0100 (Fr, 26 Feb 2010) $
  */
 public final class MultiplyConverter extends UnitConverter {
     /** The serialVersionUID */
@@ -73,13 +73,8 @@ public final class MultiplyConverter extends UnitConverter {
     }
 
     @Override
-    public Number convert(Number value, MathContext ctx) throws ArithmeticException {
-        if (value instanceof BigDecimal) {
-        	return ((BigDecimal)value).multiply(BigDecimal.valueOf(factor), ctx);
-        } else if (value instanceof BigInteger) {
-        	return ((BigInteger)value).multiply(BigInteger.valueOf((long) factor));
-        }
-        return convert(value.doubleValue());
+    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
+          return value.multiply(BigDecimal.valueOf(factor), ctx);
     }
 
     @Override

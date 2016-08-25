@@ -29,7 +29,7 @@ import javax.measure.unit.format.LocalFormat;
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author Eric Russell
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 188 $), $Date: 2010-02-24 13:07:13 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.2 ($Revision: 216 $), $Date: 2010-03-03 19:02:52 +0100 (Mi, 03 Mär 2010) $
  */
 public abstract class UnitFormat extends Format {
 
@@ -63,7 +63,7 @@ public abstract class UnitFormat extends Format {
      *
      * @return the symbol map used by this format.
      */
-    public abstract SymbolMap getSymbolMap();
+    protected abstract SymbolMap getSymbolMap();
 
     /**
      * Formats the specified unit.

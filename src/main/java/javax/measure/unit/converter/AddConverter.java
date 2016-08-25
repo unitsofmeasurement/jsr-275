@@ -7,7 +7,6 @@
 package javax.measure.unit.converter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 import javax.measure.unit.UnitConverter;
 
@@ -21,7 +20,7 @@ import javax.measure.unit.UnitConverter;
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
  *
- * @version 1.0.1 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
+ * @version 1.0.2 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
 public final class AddConverter extends UnitConverter {
 
@@ -79,13 +78,8 @@ public final class AddConverter extends UnitConverter {
     }
 
     @Override
-    public Number convert(Number value, MathContext ctx) throws ArithmeticException {
-        if (value instanceof BigDecimal) {
-        	return ((BigDecimal)value).add(BigDecimal.valueOf(offset), ctx);
-        } else if (value instanceof BigInteger) {
-        	return ((BigInteger)value).add(BigInteger.valueOf((long) offset));
-        }
-        return convert(value.doubleValue());
+    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
+         return value.add(BigDecimal.valueOf(offset), ctx);
     }
 
     @Override

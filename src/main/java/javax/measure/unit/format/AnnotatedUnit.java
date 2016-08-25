@@ -38,9 +38,9 @@ import javax.measure.unit.UnitConverter;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.1 ($Revision: 180 $), $Date: 2010-02-23 16:11:17 +0100 (Di, 23 Feb 2010) $
+ * @version 1.0.1 ($Revision: 219 $), $Date: 2010-03-03 19:45:51 +0100 (Mi, 03 Mär 2010) $
  */
-class AnnotatedUnit<Q extends Quantity<Q>> extends Unit<Q> {
+public class AnnotatedUnit<Q extends Quantity<Q>> extends Unit<Q> {
 
     /**
      *
@@ -57,7 +57,7 @@ class AnnotatedUnit<Q extends Quantity<Q>> extends Unit<Q> {
      */
     private final Unit<Q> actualUnit;
 
-    Unit<Q> getActualUnit() {
+    public Unit<Q> getActualUnit() {
 		return actualUnit;
 	}
 

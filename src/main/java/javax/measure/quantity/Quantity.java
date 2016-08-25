@@ -30,10 +30,10 @@ import javax.measure.unit.Unit;
  * @author  <a href="mailto:desruisseaux@users.sourceforge.net">Martin Desruisseaux</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.7 ($Revision: 198 $), $Date: 2010-02-24 19:53:02 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.7 ($Revision: 222 $), $Date: 2010-03-03 20:13:03 +0100 (Mi, 03 Mär 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/Quantity">Wikipedia: Quantity</a>
  */
-public interface Quantity<Q extends Quantity<Q>> extends Comparable<Quantity<Q>> {
+public interface Quantity<Q extends Quantity<Q>> {
 
     /**
      * Returns the magnitude or multitude value of this quantity stated in this
@@ -51,20 +51,6 @@ public interface Quantity<Q extends Quantity<Q>> extends Comparable<Quantity<Q>>
     Unit<Q> getUnit();
 
     /**
-     * Returns the value of this quantity stated in the specified unit. 
-     * This method is recommended over <code>
-     * q.getUnit().getConverterTo(unit).convert(q.getValue())</code>,
-     * it is not only faster but also detects potential overflow if the
-     * value stated in the specific unit cannot be represented or rounded.
-     *
-     * @param unit the unit in which the returned value is stated.
-     * @return the value of this quantity when stated in the specified unit.
-     * @throws ArithmeticException if this quantity cannot be converted to
-     *         when stated in the specified unit (e.g. overflow).
-     */
-    Number getValue(Unit<Q> unit) throws ArithmeticException;
-
-    /**
      * Returns the value of this quantity as <code>double</code> stated
      * in the specified unit. This method is recommended over <code>
      * q.getUnit().getConverterTo(unit).convert(q.getValue()).doubleValue()</code>
@@ -73,19 +59,4 @@ public interface Quantity<Q extends Quantity<Q>> extends Comparable<Quantity<Q>>
      * @return the value of this quantity when stated in the specified unit.
      */
     double doubleValue(Unit<Q> unit);
-
-    /**
-     * Returns the value of this quantity as <code>long</code> stated
-     * in the specified unit. This method is recommended over <code>
-     * q.getUnit().getConverterTo(unit).convert(q.getValue()).longValue()</code>,
-     * it is not only faster but also detects potential overflow if the
-     * value stated in the specific unit cannot be represented as
-     * <code>long</code>.
-     *
-     * @param unit the unit in which the returned value is stated.
-     * @return the value of this quantity when stated in the specified unit.
-     * @throws ArithmeticException if this quantity cannot represented as
-     *         a <code>long</code> when stated in the specified unit (e.g. overflow).
-     */
-    long longValue(Unit<Q> unit) throws ArithmeticException;
 }

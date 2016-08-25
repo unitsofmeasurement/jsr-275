@@ -47,7 +47,7 @@ import javax.measure.unit.converter.RationalConverter;
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author <a href="mailto:steve@unidata.ucar.edu">Steve Emmerson</a>
  * @author  <a href="mailto:desruisseaux@users.sourceforge.net">Martin Desruisseaux</a>
- * @version 1.2 ($Revision: 195 $), $Date: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.2 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/Units_of_measurement"> Wikipedia:
  * Units of measurement</a>
  */
@@ -173,7 +173,7 @@ public abstract class Unit<Q extends Quantity<Q>>  implements Serializable {
      * @see #getDimension()
      */
     public final boolean isCompatible(Unit<?> that) {
-        return (this == that) || this.toMetric().equals(that.toMetric()) || this.getDimension().equals(that.getDimension());
+        return (this == that) || this.toMetric().equals(that.toMetric()) || (!"".equals(this.getDimension().toString()) && this.getDimension().equals(that.getDimension()));
     }
 
     /**

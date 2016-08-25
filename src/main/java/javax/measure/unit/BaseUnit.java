@@ -19,7 +19,7 @@ import javax.measure.quantity.Quantity;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.8 ($Revision: 195 $), $Date: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.8 ($Revision: 210 $), $Date: 2010-02-25 23:34:46 +0100 (Do, 25 Feb 2010) $
  * @see <a href="http://en.wikipedia.org/wiki/SI_base_unit">
  *       Wikipedia: SI base unit</a>
  */
@@ -28,7 +28,7 @@ public class BaseUnit<Q extends Quantity<Q>> extends Unit<Q> {
     /**
      * Holds the symbol.
      */
-    private transient final String symbol;
+    private final String symbol;
 
     /** The serialVersionUID */
     private static final long serialVersionUID = 1234567654321265167L;

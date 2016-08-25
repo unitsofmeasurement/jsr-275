@@ -6,7 +6,7 @@
             https://jsr-275.dev.java.net/
      ======================================================================= -->
 
-<!-- $Id: pom.xml 204 2010-02-25 01:36:05Z keilw $ -->
+<!-- $Id: pom.xml 244 2011-11-13 18:15:56Z keilw $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -25,7 +25,7 @@
     <groupId>javax.measure</groupId>
     <artifactId>jsr-275</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.5</version>
+    <version>0.9.6</version>
     <name>JSR-275</name>
     <url>https://jsr-275.dev.java.net/</url>
 
@@ -392,7 +392,7 @@
                             <Implementation-Version>${project.version}</Implementation-Version>
 	            			<!-- mode>development</mode> TODO call it stage?
 	            			<SCM-Revision>${buildNumber}</SCM-Revision-->
-                            <SCM-Revision>$Revision: 204 $</SCM-Revision>
+                            <SCM-Revision>$Revision: 244 $</SCM-Revision>
                         </manifestEntries>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>

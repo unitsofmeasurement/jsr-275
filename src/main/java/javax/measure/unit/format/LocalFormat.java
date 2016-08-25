@@ -6,6 +6,9 @@
  */
 package javax.measure.unit.format;
 
+import static javax.measure.unit.MetricSystem.GRAM;
+import static javax.measure.unit.MetricSystem.KILOGRAM;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
@@ -109,7 +112,7 @@ import javax.measure.unit.UnitFormat;
  *
  * @author <a href="mailto:eric-r@northwestern.edu">Eric Russell</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.4 ($Revision: 187 $), $Date: 2010-02-24 12:34:43 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.4.1 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
 public class LocalFormat extends UnitFormat {
 
@@ -260,60 +263,60 @@ public class LocalFormat extends UnitFormat {
      * @return the operator precedence of the outermost operator in the unit
      *   expression that was output
      */
-    private int formatInternal0(Unit<?> unit, Appendable buffer) throws IOException {
-        String symbol = symbolMap.getSymbol(unit);
-        if (symbol != null) {
-            buffer.append(symbol);
-            return NOOP_PRECEDENCE;
-        } else {
-            symbol = unit.getSymbol();
-            if (symbol != null) {
-                buffer.append(symbol);
-                return NOOP_PRECEDENCE;
-            }
-        }
-        Map<Unit<?>, Integer> units = unit.getProductUnits();
-        if (units == null) { // Simple unit.
-            buffer.append(unit.getConverterToMetric().toString());
-            buffer.append(' ');
-            buffer.append(unit.toMetric().toString());
-            return NOOP_PRECEDENCE;
-        }
-        int negativeExponentCount = 0;
-        boolean start = true;
-        // Write positive exponents first...
-        for (Map.Entry<Unit<?>, Integer> entry : units.entrySet()) {
-            int pow = entry.getValue();
-            if (pow >= 0) {
-                formatExponent(entry.getKey(), pow, 1, !start, buffer);
-                start = false;
-            } else {
-                negativeExponentCount += 1;
-            }
-        }
-        // ..then write negative exponents.
-        if (negativeExponentCount > 0) {
-            if (start) {
-                buffer.append('1');
-            }
-            buffer.append('/');
-            if (negativeExponentCount > 1) {
-                buffer.append('(');
-            }
-            start = true;
-            for (Map.Entry<Unit<?>, Integer> entry : units.entrySet()) {
-                int pow = entry.getValue();
-                if (pow < 0) {
-                    formatExponent(entry.getKey(), -pow, 1, !start, buffer);
-                    start = false;
-                }
-            }
-            if (negativeExponentCount > 1) {
-                buffer.append(')');
-            }
-        }
-        return PRODUCT_PRECEDENCE;
-    }
+//    private int formatInternal0(Unit<?> unit, Appendable buffer) throws IOException {
+//        String symbol = symbolMap.getSymbol(unit);
+//        if (symbol != null) {
+//            buffer.append(symbol);
+//            return NOOP_PRECEDENCE;
+//        } else {
+//            symbol = unit.getSymbol();
+//            if (symbol != null) {
+//                buffer.append(symbol);
+//                return NOOP_PRECEDENCE;
+//            }
+//        }
+//        Map<Unit<?>, Integer> units = unit.getProductUnits();
+//        if (units == null) { // Simple unit.
+//            buffer.append(unit.getConverterToMetric().toString());
+//            buffer.append(' ');
+//            buffer.append(unit.toMetric().toString());
+//            return NOOP_PRECEDENCE;
+//        }
+//        int negativeExponentCount = 0;
+//        boolean start = true;
+//        // Write positive exponents first...
+//        for (Map.Entry<Unit<?>, Integer> entry : units.entrySet()) {
+//            int pow = entry.getValue();
+//            if (pow >= 0) {
+//                formatExponent(entry.getKey(), pow, 1, !start, buffer);
+//                start = false;
+//            } else {
+//                negativeExponentCount += 1;
+//            }
+//        }
+//        // ..then write negative exponents.
+//        if (negativeExponentCount > 0) {
+//            if (start) {
+//                buffer.append('1');
+//            }
+//            buffer.append('/');
+//            if (negativeExponentCount > 1) {
+//                buffer.append('(');
+//            }
+//            start = true;
+//            for (Map.Entry<Unit<?>, Integer> entry : units.entrySet()) {
+//                int pow = entry.getValue();
+//                if (pow < 0) {
+//                    formatExponent(entry.getKey(), -pow, 1, !start, buffer);
+//                    start = false;
+//                }
+//            }
+//            if (negativeExponentCount > 1) {
+//                buffer.append(')');
+//            }
+//        }
+//        return PRODUCT_PRECEDENCE;
+//    }
     
     /**
      * Format the given unit to the given StringBuffer, then return the operator
@@ -325,7 +328,8 @@ public class LocalFormat extends UnitFormat {
      * @return the operator precedence of the outermost operator in the unit 
      *   expression that was output
      */
-    private int formatInternal(Unit<?> unit, Appendable buffer) throws IOException {
+    @SuppressWarnings("unchecked")
+	private int formatInternal(Unit<?> unit, Appendable buffer) throws IOException {
         if (unit instanceof AnnotatedUnit<?>) {
             unit = ((AnnotatedUnit<?>) unit).getActualUnit();
         }
@@ -382,15 +386,15 @@ public class LocalFormat extends UnitFormat {
             int unitPrecedence = NOOP_PRECEDENCE;
             Unit<?> parentUnits = unit.toMetric();
             converter = unit.getConverterToMetric();
-            if (parentUnits.equals(MetricSystem.KILOGRAM)) {
+            if (KILOGRAM.equals(parentUnits)) {
                 // More special-case hackery to work around gram/kilogram 
                 // incosistency
-                if (unit.equals(MetricSystem.GRAM)) {
-                    buffer.append("g");
+                if (unit.equals(GRAM)) {
+                    buffer.append(symbolMap.getSymbol(GRAM));
                     return NOOP_PRECEDENCE;
                 }
-                parentUnits = MetricSystem.GRAM;
-                converter = unit.getConverterTo((Unit)MetricSystem.GRAM);
+                parentUnits = GRAM;
+                converter = unit.getConverterTo((Unit)GRAM);
             }
             unitPrecedence = formatInternal(parentUnits, temp);
             printSeparator = !parentUnits.equals(Unit.ONE);
@@ -507,10 +511,10 @@ public class LocalFormat extends UnitFormat {
             }
             double offset = ((javax.measure.unit.converter.AddConverter) converter).getOffset();
             if (offset < 0) {
-                buffer.append("-");
+                buffer.append("-"); //$NON-NLS-1$
                 offset = -offset;
             } else if (continued) {
-                buffer.append("+");
+                buffer.append("+"); //$NON-NLS-1$
             }
             long lOffset = (long) offset;
             if (lOffset == offset) {
@@ -523,16 +527,16 @@ public class LocalFormat extends UnitFormat {
             double base = ((javax.measure.unit.converter.LogConverter) converter).getBase();
             StringBuffer expr = new StringBuffer();
             if (base == StrictMath.E) {
-                expr.append("ln");
+                expr.append("ln"); //$NON-NLS-1$
             } else {
-                expr.append("log");
+                expr.append("log"); //$NON-NLS-1$
                 if (base != 10) {
                     expr.append((int) base);
                 }
             }
-            expr.append("(");
+            expr.append("("); //$NON-NLS-1$
             buffer.insert(0, expr);
-            buffer.append(")");
+            buffer.append(")"); //$NON-NLS-1$
             return EXPONENT_PRECEDENCE;
         } else if (converter instanceof javax.measure.unit.converter.ExpConverter) {
             if (unitPrecedence < EXPONENT_PRECEDENCE) {
@@ -582,8 +586,12 @@ public class LocalFormat extends UnitFormat {
                 buffer.append(rationalConverter.getDivisor());
             }
             return PRODUCT_PRECEDENCE;
+        } else if (converter instanceof UnitConverter.Compound) {
+        	UnitConverter.Compound compound = (UnitConverter.Compound) converter;
+        	return formatConverter(compound.getLeft(), true, unitPrecedence, buffer);
+//        	formatConverter(compound.getRight(), true, buffer);
         } else {
-            throw new IllegalArgumentException("Unable to format the given UnitConverter: " + converter.getClass());
+            throw new IllegalArgumentException("Unable to format the given UnitConverter: " + converter.getClass()); //$NON-NLS-1$
         }
     }
 }

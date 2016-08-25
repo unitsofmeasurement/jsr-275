@@ -6,16 +6,12 @@
  */
 package javax.measure.util;
 
-import java.math.BigDecimal;
-import javax.measure.quantity.Length;
-import javax.measure.unit.Unit;
-
 /**
  * A static helper class, checking e.g. if some tests require optional console output
  * XXX this could be done using a logging framework eventually
  *
- * @version $Revision: 189 $, $Date: 2010-02-24 14:10:17 +0100 (Mi, 24 Feb 2010) $
- * @author $Author: dautelle $
+ * @version $Revision: 223 $, $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
+ * @author $Author: keilw $
  */
 public abstract class TestUtil {
     private static final String TEST_CONSOLE_OUTPUT = "testConsoleOutput";
@@ -27,5 +23,8 @@ public abstract class TestUtil {
         if (isTestOutput()) {
             System.out.println(message);
         }
+    }
+    public static final void print(Object object) {
+    	print(String.valueOf(object));
     }
 }

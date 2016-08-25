@@ -3,6 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: JScience
 Bundle-SymbolicName: javax.measure
 Bundle-Name: Measures and Units
-Bundle-Version: 0.9.5
+Bundle-Version: 0.9.6
 Export-Package: javax.measure.quantity,
  javax.measure.unit;uses:="junit.framework"

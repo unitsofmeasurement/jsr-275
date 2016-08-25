@@ -24,13 +24,13 @@ import javax.measure.quantity.Quantity;
  *
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 195 $), $Date: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.1 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  * @see Unit#multiply(Unit)
  * @see Unit#divide(Unit)
  * @see Unit#pow(int)
  * @see Unit#root(int)
  */
-final class ProductUnit<Q extends Quantity<Q>> extends Unit<Q> {
+public final class ProductUnit<Q extends Quantity<Q>> extends Unit<Q> {
 
     /**
 	 * For cross-version compatibility.

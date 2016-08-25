@@ -19,11 +19,14 @@ import javax.measure.quantity.Quantity;
  * @param <Q> The type of the quantity measured by this unit.
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.1, $Date: 2010-02-24 18:40:34 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.1, $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
-final class AlternateUnit<Q extends Quantity<Q>> extends Unit<Q> {
- 
-    /**
+public final class AlternateUnit<Q extends Quantity<Q>> extends Unit<Q> {
+
+    /** The serialVersionUID */
+    private static final long serialVersionUID = -1234567854321234567L;
+
+	/**
      * Holds the parent unit (a system unit).
      */
     private final Unit<?> parent;

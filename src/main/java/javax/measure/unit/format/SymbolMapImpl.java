@@ -7,6 +7,7 @@
 package javax.measure.unit.format;
 
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,6 +16,8 @@ import java.util.ResourceBundle;
 import javax.measure.unit.Unit;
 import javax.measure.unit.UnitConverter;
 import javax.measure.unit.UnitFormat;
+import javax.measure.unit.converter.MultiplyConverter;
+import javax.measure.unit.converter.RationalConverter;
 
 
 /**
@@ -38,7 +41,7 @@ import javax.measure.unit.UnitFormat;
  *
  * @author <a href="mailto:eric-r@northwestern.edu">Eric Russell</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.4 ($Revision: 180 $), $Date: 2010-02-23 16:11:17 +0100 (Di, 23 Feb 2010) $
+ * @version 1.4.1 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
 class SymbolMapImpl implements UnitFormat.SymbolMap {
 
@@ -93,10 +96,10 @@ class SymbolMapImpl implements UnitFormat.SymbolMap {
                 } else if (value instanceof ParsePrefix) {
                     label((ParsePrefix)value, symbol);
                 } else {
-                    throw new ClassCastException("unable to cast "+value+" to Unit or Prefix");
+                    throw new ClassCastException("unable to cast " + value + " to Unit or Prefix"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             } catch (Exception e) {
-                System.err.println("ERROR reading Unit names: " + e.toString());
+                System.err.println("Error reading Unit names: " + e.toString()); //$NON-NLS-1$
             }
         }
     }
@@ -111,7 +114,7 @@ class SymbolMapImpl implements UnitFormat.SymbolMap {
     }
 
     public void prefix (UnitConverter cvtr, String symbol) {
-        throw new UnsupportedOperationException("Prefixes are not modifiable");
+        throw new UnsupportedOperationException("Prefixes are not modifiable"); //$NON-NLS-1$
     }
 
     public Unit<?> getUnit (String symbol) {
@@ -144,6 +147,15 @@ class SymbolMapImpl implements UnitFormat.SymbolMap {
         symbolToPrefix.put(symbol, prefix);
         prefixToSymbol.put(prefix, symbol);
         converterToPrefix.put(prefix.getConverter(), prefix);
+        // adding MultiplyConverters (ensuring KILO(METRE) = METRE.multiply(1000)
+        if (prefix.getConverter() instanceof RationalConverter) {
+        	RationalConverter rc = (RationalConverter)prefix.getConverter();
+        	if (rc.getDividend() != null && BigInteger.ONE.equals(rc.getDivisor())) {
+        		converterToPrefix.put(new MultiplyConverter(rc.getDividend().doubleValue()), prefix);
+        	} else if (rc.getDivisor() != null && BigInteger.ONE.equals(rc.getDividend())) {
+        		converterToPrefix.put(new MultiplyConverter(1d / rc.getDivisor().doubleValue()), prefix);
+        	}
+        }
     }
 
     /**

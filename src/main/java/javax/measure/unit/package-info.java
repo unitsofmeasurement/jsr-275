@@ -79,6 +79,6 @@
  *     </p>
  *
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 0.9.5, February 24, 2010
+ * @version 0.9.6, February 24, 2010
  */
 package javax.measure.unit;

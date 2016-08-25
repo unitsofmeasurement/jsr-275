@@ -7,8 +7,12 @@
 package javax.measure.unit;
 
 import static javax.measure.util.TestUtil.print;
+import static javax.measure.unit.MetricSystem.MILLI;
 import static javax.measure.unit.MetricSystem.METRE;
+import static javax.measure.unit.USCustomarySystem.LITER;
 import static javax.measure.unit.USCustomarySystem.METER;
+
+import javax.measure.quantity.Volume;
 
 import org.junit.Test;
 
@@ -17,7 +21,7 @@ import junit.framework.TestCase;
 /**
  * Unit test for class javax.measure.unit.SI
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 172 $), $Date: 2010-02-21 20:02:14 +0100 (So, 21 Feb 2010) $
+ * @version 1.1 ($Revision: 240 $), $Date: 2010-06-14 20:18:34 +0200 (Mo, 14 Jun 2010) $
  */
 public class SITest extends TestCase {
 
@@ -64,4 +68,10 @@ public class SITest extends TestCase {
     public void testSIvsUS() {
     	assertEquals(METRE, METER);
     }
+    
+	public void testVolume() {
+		print("ML: ");
+		Unit<Volume> MILLILITER = MILLI(LITER);
+		print(MILLILITER);
+	}
 }

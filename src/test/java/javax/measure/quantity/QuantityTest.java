@@ -32,7 +32,6 @@ public class QuantityTest {
         assertEquals("Wrong tuple element.", Double.valueOf(4.0), length.getValue());
         assertEquals("Wrong conversion.", 4.0,   length.doubleValue(METRE), 0.0);
         assertEquals("Wrong conversion.", 400.0, length.doubleValue(CENTI(METRE)), 0.0);
-        assertEquals("Wrong conversion.", 400,  length.getValue(CENTI(METRE)).longValue());
 
         final Length other = factory.create(8.0, METRE);
         assertSame ("Expected same implementation class.", length.getClass(), other.getClass());
@@ -60,7 +59,6 @@ public class QuantityTest {
         assertEquals ("Wrong tuple element.", BigInteger.valueOf(4), length.getValue());
         assertEquals("Wrong conversion.", 4.0,   length.doubleValue(METRE), 0.0);
         assertEquals("Wrong conversion.", 400.0, length.doubleValue(CENTI(METRE)), 0.0);
-        assertEquals("Wrong conversion.", 400, length.getValue(CENTI(METRE)).longValue());
 
         // Quantity equivalent to 'length', but backed by a double.
         // This is not the same class, but should nevertheless by considered equivalent.

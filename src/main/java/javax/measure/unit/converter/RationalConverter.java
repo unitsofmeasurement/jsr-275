@@ -21,7 +21,7 @@ import javax.measure.unit.UnitConverter;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.1 ($Revision: 178 $), $Date: 2010-02-22 20:18:18 +0100 (Mo, 22 Feb 2010) $
+ * @version 1.1 ($Revision: 214 $), $Date: 2010-02-26 22:45:02 +0100 (Fr, 26 Feb 2010) $
  */
 public final class RationalConverter extends UnitConverter {
 
@@ -84,27 +84,23 @@ public final class RationalConverter extends UnitConverter {
     }
 
     @Override
-    public Number convert(Number value, MathContext ctx) throws ArithmeticException {
-        if (value instanceof BigInteger) {
-        	return ((BigInteger)value).multiply(dividend).divide(divisor);
-        } else if (value instanceof BigDecimal){
-        	return ((BigDecimal)value).toBigInteger().multiply(dividend).divide(divisor);
-        } else {
-        	return BigInteger.valueOf(value.longValue()).multiply(dividend).divide(divisor);
-        }
+    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
+        BigDecimal decimalDividend = new BigDecimal(dividend, 0);
+        BigDecimal decimalDivisor = new BigDecimal(divisor, 0);
+        return value.multiply(decimalDividend, ctx).divide(decimalDivisor, ctx);
     }
 
     @Override
     public UnitConverter concatenate(UnitConverter converter) {
         if (converter instanceof RationalConverter) {
             RationalConverter that = (RationalConverter) converter;
-            BigInteger dividend = this.getDividend().multiply(that.getDividend());
-            BigInteger divisor = this.getDivisor().multiply(that.getDivisor());
-            BigInteger gcd = dividend.gcd(divisor);
-            dividend = dividend.divide(gcd);
-            divisor = divisor.divide(gcd);
-            return (dividend.equals(BigInteger.ONE) && divisor.equals(BigInteger.ONE))
-                    ? IDENTITY : new RationalConverter(dividend, divisor);
+            BigInteger newDividend = this.getDividend().multiply(that.getDividend());
+            BigInteger newDivisor = this.getDivisor().multiply(that.getDivisor());
+            BigInteger gcd = newDividend.gcd(newDivisor);
+            newDividend = newDividend.divide(gcd);
+            newDivisor = newDivisor.divide(gcd);
+            return (newDividend.equals(BigInteger.ONE) && newDivisor.equals(BigInteger.ONE))
+                    ? IDENTITY : new RationalConverter(newDividend, newDivisor);
         } else
             return super.concatenate(converter);
     }

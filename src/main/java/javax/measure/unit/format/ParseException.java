@@ -8,6 +8,8 @@
 /* JavaCCOptions:KEEP_LINE_COL=null */
 package javax.measure.unit.format;
 
+import static javax.measure.unit.format.TokenMgrError.addEscapes;
+
 /**
  * This exception is thrown when parse errors are encountered.
  * You can explicitly create objects of this exception type by
@@ -19,7 +21,7 @@ package javax.measure.unit.format;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0 ($Revision: 199 $), $Date: 2010-02-24 19:57:58 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.0 ($Revision: 211 $), $Date: 2010-02-25 23:40:49 +0100 (Do, 25 Feb 2010) $
  */
 class ParseException extends RuntimeException {
 
@@ -123,7 +125,7 @@ class ParseException extends RuntimeException {
       }
       retval += " " + tokenImage[tok.kind];
       retval += " \"";
-      retval += add_escapes(tok.image);
+      retval += addEscapes(tok.image);
       retval += " \"";
       tok = tok.next;
     }
@@ -142,56 +144,6 @@ class ParseException extends RuntimeException {
    * The end of line string for this machine.
    */
   protected String eol = System.getProperty("line.separator", "\n");
-
-  /**
-   * Used to convert raw characters to their escaped version
-   * when these raw version cannot be used as part of an ASCII
-   * string literal.
-   */
-  static String add_escapes(String str) {
-      StringBuffer retval = new StringBuffer();
-      char ch;
-      for (int i = 0; i < str.length(); i++) {
-        switch (str.charAt(i))
-        {
-           case 0 :
-              continue;
-           case '\b':
-              retval.append("\\b");
-              continue;
-           case '\t':
-              retval.append("\\t");
-              continue;
-           case '\n':
-              retval.append("\\n");
-              continue;
-           case '\f':
-              retval.append("\\f");
-              continue;
-           case '\r':
-              retval.append("\\r");
-              continue;
-           case '\"':
-              retval.append("\\\"");
-              continue;
-           case '\'':
-              retval.append("\\\'");
-              continue;
-           case '\\':
-              retval.append("\\\\");
-              continue;
-           default:
-              if ((ch = str.charAt(i)) < 0x20 || ch > 0x7e) {
-                 String s = "0000" + Integer.toString(ch, 16);
-                 retval.append("\\u" + s.substring(s.length() - 4, s.length()));
-              } else {
-                 retval.append(ch);
-              }
-              continue;
-        }
-      }
-      return retval.toString();
-   }
 
 }
 /* JavaCC - OriginalChecksum=c67b0f8ee6c642900399352b33f90efd (do not edit this line) */

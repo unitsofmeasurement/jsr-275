@@ -7,6 +7,7 @@
 package javax.measure.unit;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.MathContext;
 
 /**
@@ -22,7 +23,7 @@ import java.math.MathContext;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.2 ($Revision: 188 $), $Date: 2010-02-24 13:07:13 +0100 (Mi, 24 Feb 2010) $
+ * @version 1.3 ($Revision: 223 $), $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
 public abstract class UnitConverter implements Serializable {
 
@@ -61,32 +62,19 @@ public abstract class UnitConverter implements Serializable {
     public abstract double convert(double value);
 
     /**
-     * Converts a {@link Number} value.
+     * Converts a {@link BigDecimal} number according to the specified
+     * math context.
      *
-     * @param value the numeric value to convert.
+     * @param value the decimal number to convert.
      * @param ctx the math context being used for conversion.
-     * @return the decimal value after conversion.
+     * @return the decimal number after conversion.
      * @throws ArithmeticException if the result is inexact but the
      *         rounding mode is <code>MathContext.UNLIMITED</code> or
      *         <code>mathContext.precision == 0</code> and the quotient has a
      *         non-terminating decimal expansion.
      */
-    public abstract Number convert(Number value, MathContext ctx) throws ArithmeticException;
+    public abstract BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException;
 
-    /**
-     * Converts a {@link Number} value.
-     *
-     * @param value the numeric value to convert.
-     * @return the decimal value after conversion.
-     * @throws ArithmeticException if the result is inexact but the
-     *         rounding mode is <code>MathContext.UNLIMITED</code> or
-     *         <code>mathContext.precision == 0</code> and the quotient has a
-     *         non-terminating decimal expansion.
-     */
-    public Number convert(Number value) throws ArithmeticException {
-    	return convert(value, MathContext.UNLIMITED);
-    }
-    
     /**
      * Indicates whether this converter is considered to be the the same as the
      * one specified.
@@ -134,7 +122,7 @@ public abstract class UnitConverter implements Serializable {
      *     // then y1*y2 == c1.concatenate(c2).convert(x1*x2)
      * [/code] </p>
      *
-     * @return <code>true</code> if this converter is made of distinct converter;
+     * @return <code>true</code> if this converter is linear;
      *         <code>false</code> otherwise.
      */
     public abstract boolean isLinear();
@@ -144,7 +132,7 @@ public abstract class UnitConverter implements Serializable {
      * separate converters (in matrix notation
      * <code>[compound] = [left] x [right]</code>).
      */
-    interface Compound {
+    public interface Compound {
 
         /**
          * Returns the left converter of this compound converter
@@ -184,7 +172,7 @@ public abstract class UnitConverter implements Serializable {
         }
 
         @Override
-        public Number convert(Number value, MathContext ctx) {
+        public BigDecimal convert(BigDecimal value, MathContext ctx) {
             return value;
         }
 
@@ -252,7 +240,7 @@ public abstract class UnitConverter implements Serializable {
         }
 
         @Override
-        public Number convert(Number value, MathContext ctx) {
+        public BigDecimal convert(BigDecimal value, MathContext ctx) {
             return left.convert(right.convert(value, ctx), ctx);
         }
 

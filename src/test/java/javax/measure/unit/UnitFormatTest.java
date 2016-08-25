@@ -7,103 +7,102 @@
 package javax.measure.unit;
 
 import static javax.measure.unit.MetricSystem.*;
-import static javax.measure.util.TestUtil.*;
+import static javax.measure.unit.USCustomarySystem.*;
 
+import static javax.measure.util.TestUtil.*;
+import static org.junit.Assert.*;
+
+import java.math.BigInteger;
 import java.util.Locale;
 
 import javax.measure.quantity.Length;
 
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
-
-import junit.framework.TestCase;
 
 /**
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version $Revision: 206 $, $Date: 2010-02-25 02:40:17 +0100 (Do, 25 Feb 2010) $
+ * @version $Revision: 223 $, $Date: 2010-03-14 15:44:36 +0100 (So, 14 Mär 2010) $
  */
-public class UnitFormatTest extends TestCase {
-//  private static final String COMPARISON_POINT = "pt";
-    private static final String COMPARISON_TEXT = "km";
+public class UnitFormatTest {
+  private static final String COMPARISON_FOOT = "ft";
+    private static final String COMPARISON_KM = "km";
     private static final Locale COMPARISON_LOCALE = Locale.UK;
 
     UnitFormat format;
-    Unit<Length> l1;
-    Unit<Length> l2;
-
-    protected void setUp() throws Exception {
-        super.setUp();
+    Unit<Length> cm;
+    Unit<Length> mm;
+    Unit<Length> foot;
+    
+    @Before
+    public void setUp() throws Exception {
         //setName(UCUMFormatTest.class.getSimpleName());
 
-        l1 = CENTI(METRE);
-        l2 = MILLI(METRE);
+        cm = CENTI(METRE);
+        mm = MILLI(METRE);
+        foot = FOOT;
 
-        print("Running " + getName()+
-                " [" + getClass().getSimpleName() + "]");
+//        print("Running " + getClass().getSimpleName() + "...");
     }
 
     protected void tearDown() throws Exception {
-        super.tearDown();
+//        super.tearDown();
     }
 
     @Test
     public void testDefault() {
         format = UnitFormat.getInstance();
         //format.format(unit, appendable);
-        String result = format.format(l1);
-        print(result);
+        String formattedText = format.format(cm);
+        print(formattedText);
         //System.out.println(unit2);
-        result = format.format(l2);
-        print(result);
+        formattedText = format.format(mm);
+        print(formattedText);
+        formattedText = format.format(foot);
+        print(formattedText);
     }
 
     @Test
     public void testGetInstanceLocale() {
         format = UnitFormat.getInstance(COMPARISON_LOCALE);
-        String formattedText = format.format(l1);
+        String formattedText = format.format(cm);
         print(formattedText);
         //System.out.println(unit2);
-        formattedText = format.format(l2);
+        formattedText = format.format(mm);
         print(formattedText);
- //       assertEquals(formattedText, COMPARISON_TEXT); // @test hardcoded string here to verify English locale used
+        formattedText = format.format(foot);
+        print(formattedText);
+        assertEquals(COMPARISON_FOOT, formattedText);
     }
 
     @Test
-    public void testGetStandard() {
-        format = UnitFormat.getInstance();
-        String formattedText = format.format(l1);
-        print(formattedText);
-        //System.out.println(unit2);
-        formattedText = format.format(l2);
-        print(formattedText);
-        print(USCustomarySystem.ELECTRON_VOLT.getDimension().toString());
-        print(USCustomarySystem.ELECTRON_VOLT.toString());
+    public void testUSVolt() {
+        print(ELECTRON_VOLT.getDimension().toString());
+        print(ELECTRON_VOLT.toString());
     }
     
-//    @Test
-//    public void testMultiples() {
-//    	Unit u = CENTI(METRE);
-//    	print(u.toString());
-//    }
-
-//    private void applyTest(UnitFormat uf, Unit u, Appendable a) {
-//        try {
-//            uf.format(u, a);
-//        } catch (Exception ex) {
-//            fail(ex.getMessage());
-//        }
-//    }
+    @Test
+    public void testSubMultiples() {
+    	Unit<Length> u = CENTI(METRE);
+    	print(u.toString());
+    }
 
     /**
      * Tests the {@link Unit#toString()} method, which is backed by {@link UnitFormat}.
      *
      * @see http://kenai.com/jira/browse/JSR_275-43
      */
-//    @Ignore
-//    public void testToString() {
-//        assertEquals("m", METRE.toString());
-//        assertEquals(COMPARISON_TEXT, KILO(METRE).toString());
-//        assertEquals(COMPARISON_TEXT, METRE.multiply(1000).toString());
-//        assertEquals(COMPARISON_TEXT, METRE.multiply(1000d).toString());
-//    }
+    @Test
+    public void testToString() {
+        assertEquals("m", METRE.toString());
+        // Multiples
+        assertEquals(COMPARISON_KM, KILO(METRE).toString());
+        assertEquals(COMPARISON_KM, METRE.multiply(1000).toString());
+        assertEquals(COMPARISON_KM, METRE.multiply(1000d).toString());
+        assertEquals("Tm", METRE.multiply(BigInteger.TEN.pow(12).longValue()).toString());
+        // Submultiples
+        assertEquals("cm", METRE.divide(100d).toString());
+        assertEquals("mm", METRE.divide(1000d).toString());
+        assertEquals("fm", METRE.divide(BigInteger.TEN.pow(15).longValue()).toString());
+    }
 }

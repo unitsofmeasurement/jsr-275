@@ -19,7 +19,7 @@ import javax.measure.unit.UnitConverter;
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.0.1 ($Revision: 169 $), $Date: 2010-02-21 18:48:40 +0100 (So, 21 Feb 2010) $
+ * @version 1.0.1 ($Revision: 214 $), $Date: 2010-02-26 22:45:02 +0100 (Fr, 26 Feb 2010) $
  */
 public final class ExpConverter extends UnitConverter {
 
@@ -87,7 +87,7 @@ public final class ExpConverter extends UnitConverter {
     }
 
     @Override
-    public Number convert(Number value, MathContext ctx) throws ArithmeticException {
+    public BigDecimal convert(BigDecimal value, MathContext ctx) throws ArithmeticException {
         return BigDecimal.valueOf(convert(value.doubleValue())); // Reverts to double conversion.
     }
 
