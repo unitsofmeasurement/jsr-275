@@ -12,5 +12,5 @@
 <booleanAttribute key="M2_WORKSPACE_RESOLUTION" value="false"/>
 <stringAttribute key="bad_container_name" value="\jsr-275\s"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms64m -Xmx128m -DtestConsoleOutput=true"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/jsr-275}"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:/jsr-275_kenai}"/>
 </launchConfiguration>

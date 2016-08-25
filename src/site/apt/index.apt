@@ -1,4 +1,13 @@
 ~~
+~~   Copyright (c) 2005-2010, Jean-Marie Dautelle, Werner Keil
+~~   All rights reserved.
+~~
+~~   See LICENSE.txt for the Specification License
+~~
+~~   See LICENSE.txt for the full Specification License
+~~
+~~
+~~
 ~~ JEAN-MARIE DAUTELLE, WERNER KEIL ARE WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS CONTAINED IN THIS LICENSE AGREEMENT ("AGREEMENT"). PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THIS AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY THEM, SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE AND THE DOWNLOADING PROCESS WILL NOT CONTINUE.
 ~~
 ~~ Specification: JSR 275 - Units Specification ("Specification")
@@ -382,7 +391,7 @@
 ~~  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 ~~  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ~~
-~~ @version $Revision: 76 $ ($Author: keilw $) $Date: 2009-12-03 23:53:52 +0100 (Do, 03 Dez 2009) $
+~~ @version $Revision: 123 $ ($Author: keilw $) $Date: 2010-02-16 22:35:17 +0100 (Di, 16 Feb 2010) $
 ~~ See this file format http://maven.apache.org/doxia/references/apt-format.html
 
                                     ------------------

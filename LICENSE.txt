@@ -3,11 +3,11 @@
 
     Specification: JSR 275 - Units Specification ("Specification")
 
-    Version: 0.9.4
+    Version: 0.9.5
     Status: Pre-FCS Public Release
-    Release: December 4, 2009
+    Release: February 24, 2010
 
-    Copyright 2005-2009 Jean-Marie Dautelle, Werner Keil
+    Copyright (c) 2005-2010 Jean-Marie Dautelle, Werner Keil
     All rights reserved.
 
 
