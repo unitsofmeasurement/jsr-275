@@ -146,7 +146,7 @@ import javax.measure.unit.Unit;
  *       Thread.wait(Measure.valueOf(24, NonSI.HOUR));[/code]</p>
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0, April 15, 2009
+ * @version 1.0.3 ($Revision: 75 $), $Date: 2009-12-03 21:21:21 +0100 (Do, 03 Dez 2009) $
  */
 public interface Measurable<Q extends Quantity> extends Comparable<Measurable<Q>> {
 
@@ -176,7 +176,7 @@ public interface Measurable<Q extends Quantity> extends Comparable<Measurable<Q>
      * @param unit the unit in which the returned value is stated.
      * @return the numeric value after conversion to type <code>long</code>.
      * @throws ArithmeticException if this measurable cannot be represented
-     *         by a <code>int</code> number in the specified unit.
+     *         by a <code>long</code> number in the specified unit.
      */
     long longValue(Unit<Q> unit) throws ArithmeticException;
 
@@ -184,8 +184,8 @@ public interface Measurable<Q extends Quantity> extends Comparable<Measurable<Q>
      * Returns the <code>float</code> value of this measurable
      * when stated in the specified unit. If the measurable has too great of
      * a magnitude to be represented as a <code>float</code>,
-     * <code>FLOAT.NEGATIVE_INFINITY</code> or
-     * <code>FLOAT.POSITIVE_INFINITY</code> is returned as appropriate.
+     * <code>Float.NEGATIVE_INFINITY</code> or
+     * <code>Float.POSITIVE_INFINITY</code> is returned as appropriate.
      *
      * @param unit the unit in which this returned value is stated.
      * @return the numeric value after conversion to type <code>float</code>.

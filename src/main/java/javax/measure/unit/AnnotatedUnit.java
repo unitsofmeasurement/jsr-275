@@ -113,8 +113,8 @@ import javax.measure.quantity.Quantity;
  *                  private Unit(javax.measure.unit.Unit<Length> realUnit, String annotation) {
  *                      super(realUnit, annotation);
  *                  }
- *                  public static Size.Unit METER = new Size.Unit(SI.METER, "SIZE"); // Equivalent to SI.METER
- *                  public static Size.Unit INCH = new Size.Unit(NonSI.INCH, "SIZE"); // Equivalent to NonSI.INCH
+ *                  public static Size.Unit METER = new Size.Unit(SI.METRE, "size"); // Equivalent to SI.METRE
+ *                  public static Size.Unit INCH = new Size.Unit(NonSI.INCH, "size"); // Equivalent to NonSI.INCH
  *             }
  *        }[/code]</p>
  * <p> Annotation are often written between curly braces behind units 
@@ -123,7 +123,7 @@ import javax.measure.quantity.Quantity;
  *      respectively.</p>
  *       
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 63 $), $Date: 2009-11-18 22:44:39 +0100 (Mi, 18 Nov 2009) $
+ * @version 1.0.1 ($Revision: 67 $), $Date: 2009-11-19 16:10:52 +0100 (Do, 19 Nov 2009) $
  */
 public class AnnotatedUnit<Q extends Quantity> extends DerivedUnit<Q> {
 

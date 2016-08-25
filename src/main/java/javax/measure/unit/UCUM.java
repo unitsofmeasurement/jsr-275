@@ -120,10 +120,9 @@ import javax.measure.quantity.*;
  * 
  * @author  <a href="mailto:eric-r@northwestern.edu">Eric Russell</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.4.2, ($Revision: 63 $) $Date: 2009-11-18 22:44:39 +0100 (Mi, 18 Nov 2009) $
+ * @version 1.4.2, ($Revision: 71 $) $Date: 2009-11-21 22:26:48 +0100 (Sa, 21 Nov 2009) $
  * @see <a href="http://aurora.regenstrief.org/UCUM/ucum.html">UCUM</a>
  */
-@SuppressWarnings("unchecked")
 public final class UCUM extends SystemOfUnits {
 
     /** Holds collection of all UCUM units. */
@@ -144,7 +143,7 @@ public final class UCUM extends SystemOfUnits {
      * @param  unit the unit being added.
      * @return <code>unit</code>.
      */
-    private static <U extends Unit<?>> U ucum(U unit) {
+    private static <U extends Unit> U ucum(U unit) {
         UNITS.add(unit);
         return unit;
     }
@@ -698,5 +697,13 @@ public final class UCUM extends SystemOfUnits {
     /** As per <a href="http://unitsofmeasure.org/">UCUM</a> standard. */
     public static final Unit<DataAmount> BYTE = ucum(NonSI.BYTE);
     /** As per <a href="http://unitsofmeasure.org/">UCUM</a> standard. */
-    public static final Unit<DataRate> BAUD = (Unit<DataRate>) ucum(Unit.ONE.divide(SECOND));
+    public static final Unit<DataRate> BAUD = ucum(Unit.ONE.divide(SECOND)).asType(DataRate.class);
+
+    ///////////////////////
+    // MISSING FROM UCUM //
+    ///////////////////////
+
+    /** To be added to the <a href="http://unitsofmeasure.org/">UCUM</a> standard. */
+    public static final Unit<Frequency> FRAMES_PER_SECOND = ucum(Unit.ONE.divide(SECOND)).asType(Frequency.class);
+
 }

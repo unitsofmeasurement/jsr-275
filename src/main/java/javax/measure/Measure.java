@@ -162,17 +162,12 @@ import javax.measure.unit.Unit;
  * <p> All instances of this class shall be immutable.</p>
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.1 ($Revision: 63 $), $Date: 2009-11-18 22:44:39 +0100 (Mi, 18 Nov 2009) $
+ * @version 1.0.1 ($Revision: 72 $), $Date: 2009-11-22 13:05:06 +0100 (So, 22 Nov 2009) $
  */
 public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
         Serializable {
 
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4993173119977931016L;
-
-	/**
      * Default constructor.
      */
     protected Measure() {
@@ -191,6 +186,17 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
      * @return the measurement unit.
      */
     public abstract Unit<Q> getUnit();
+
+    /**
+     * Convenient method equivalent to <code>Math.round(doubleValue(unit))</code>.
+     *
+     * @return unit the unit in which the integer value is stated.
+     * @throws ArithmeticException if this measure cannot be represented
+     *         by a <code>long</code> number in the specified unit.
+     */
+    public long round(Unit<Q> unit) {
+        return Math.round(doubleValue(unit));
+    }
 
     /**
      * Convenient method equivalent to {@link #to(javax.measure.unit.Unit)
@@ -330,7 +336,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
      * @return <code>UnitFormat.getInternational().format(this)</code>
      */
     @Override
-    public final String toString() {
+    public String toString() {
         return MeasureFormat.getStandard().format(this);
     }
 
@@ -375,7 +381,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
      * @see Unit#asType(Class)
      */
     @SuppressWarnings("unchecked")
-    public final <T extends Quantity> Measure<T> asType(Class<T> type)
+    public <T extends Quantity> Measure<T> asType(Class<T> type)
             throws ClassCastException {
         this.getUnit().asType(type); // Raises ClassCastException is dimension
         // mismatches.
@@ -418,11 +424,10 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
 
     private static class IntegerMeasure<T extends Quantity> extends Measure<T> {
 
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 5355395476874521709L;
-		int _value;
+        private static final long serialVersionUID = 1L;
+
+        int _value;
+
         Unit<T> _unit;
 
         public IntegerMeasure(int value, Unit<T> unit) {
@@ -468,11 +473,10 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
 
     private static class LongMeasure<T extends Quantity> extends Measure<T> {
 
- 		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -7465490977335120477L;
-		long _value;
+        private static final long serialVersionUID = 1L;
+
+        long _value;
+
         Unit<T> _unit;
 
         public LongMeasure(long value, Unit<T> unit) {
@@ -526,6 +530,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
     private static class FloatMeasure<T extends Quantity> extends Measure<T> {
 
         float _value;
+
         Unit<T> _unit;
 
         public FloatMeasure(float value, Unit<T> unit) {
@@ -555,6 +560,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
             return (_unit.equals(unit)) ? decimal : _unit.getConverterTo(unit).convert(decimal, ctx);
         }
         private static final long serialVersionUID = 1L;
+
     }
 
     /**
@@ -573,6 +579,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
     private static class DoubleMeasure<T extends Quantity> extends Measure<T> {
 
         double _value;
+
         Unit<T> _unit;
 
         public DoubleMeasure(double value, Unit<T> unit) {
@@ -602,6 +609,7 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
             return (_unit.equals(unit)) ? decimal : _unit.getConverterTo(unit).convert(decimal, ctx);
         }
         private static final long serialVersionUID = 1L;
+
     }
 
     /**
@@ -619,11 +627,10 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
 
     private static class DecimalMeasure<T extends Quantity> extends Measure<T> {
 
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 6504081836032983882L;
-		BigDecimal _value;
+        private static final long serialVersionUID = 1L;
+
+        BigDecimal _value;
+
         Unit<T> _unit;
 
         public DecimalMeasure(BigDecimal value, Unit<T> unit) {
@@ -652,4 +659,6 @@ public abstract class Measure<Q extends Quantity> implements Measurable<Q>,
             return (_unit.equals(unit)) ? _value : _unit.getConverterTo(unit).convert(_value, ctx);
         }
     }
+    private static final long serialVersionUID = 1L;
+
 }

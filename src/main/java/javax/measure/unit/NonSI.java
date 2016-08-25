@@ -119,7 +119,7 @@ import javax.measure.quantity.*;
  * 
  * @author <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
  * @author  <a href="mailto:jsr275@catmedia.us">Werner Keil</a>
- * @version 1.7 ($LastChangedRevision: 63 $), $LastChangedDate: 2009-11-18 22:44:39 +0100 (Mi, 18 Nov 2009) $
+ * @version 1.7 ($LastChangedRevision: 71 $), $LastChangedDate: 2009-11-21 22:26:48 +0100 (Sa, 21 Nov 2009) $
  */
 public final class NonSI extends SystemOfUnits {
 
@@ -749,15 +749,21 @@ public final class NonSI extends SystemOfUnits {
     /**
      * A unit of dynamic viscosity equal to <code>1 g/(cmÂ·s)</code> (cgs unit).
      */
-    @SuppressWarnings("unchecked")
-    public static final Unit<DynamicViscosity> POISE = nonSI((Unit<DynamicViscosity>) GRAM.divide(CENTI(METRE).times(SECOND)));
+    public static final Unit<DynamicViscosity> POISE = nonSI(GRAM.divide(CENTI(METRE).times(SECOND))).asType(DynamicViscosity.class);
 
     /**
-     * A unit of kinematic viscosity equal to <code>1 cmÂ²/s</code> (cgs unit).
+     * A unit of kinematic viscosity equal to <code>1 cm²/s</code> (cgs unit).
      */
-    @SuppressWarnings("unchecked")
-    public static final Unit<KinematicViscosity> STOKE = nonSI((Unit<KinematicViscosity>) CENTI(
-            METRE).pow(2).divide(SECOND));
+    public static final Unit<KinematicViscosity> STOKE = nonSI(CENTI(METRE).pow(2).divide(SECOND)).asType(KinematicViscosity.class);
+
+    ///////////////
+    // Frequency //
+    ///////////////
+    /**
+     * A unit used to measure the frequency (rate) at which an imaging device
+     * produces unique consecutive images (standard name <code>fps</code>).
+     */
+    public static final Unit<Frequency> FRAMES_PER_SECOND = nonSI(Unit.ONE.divide(SECOND)).asType(Frequency.class);
 
     // //////////
     // Others //

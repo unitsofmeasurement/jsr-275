@@ -114,7 +114,7 @@ import javax.measure.quantity.Dimensionless;
  * <p> Instances of this class are immutable.</p>
  *
  * @author  <a href="mailto:jean-marie@dautelle.com">Jean-Marie Dautelle</a>
- * @version 1.0.2 ($Revision), $Date: 2009-11-18 22:44:39 +0100 (Mi, 18 Nov 2009) $
+ * @version 1.0.2 ($Revision), $Date: 2009-11-19 20:20:49 +0100 (Do, 19 Nov 2009) $
  * @see <a href="http://en.wikipedia.org/wiki/Dimensional_analysis">
  *      Wikipedia: Dimensional Analysis</a>
  */
@@ -123,7 +123,7 @@ public final class Dimension implements Serializable {
     /**
      * Holds the current physical model.
      */
-    private Model model = Model.STANDARD;
+    private static Model model = Model.STANDARD;
 
     /**
      * Holds dimensionless.
@@ -317,8 +317,8 @@ public final class Dimension implements Serializable {
      *  
      * @param model the new model to be used when calculating unit dimensions.
      */
-    public void setModel(Model model) {
-        this.model = model;
+    public static void setModel(Model model) {
+        Dimension.model = model;
     }
 
     /**
@@ -327,8 +327,8 @@ public final class Dimension implements Serializable {
      *  
      * @return the model used when calculating unit dimensions.
      */
-    public Model getModel() {
-        return model;
+    public static Model getModel() {
+        return Dimension.model;
     }
 
     /**

@@ -6,7 +6,7 @@
             https://kenai.com/projects/jsr-275
      ======================================================================= -->
 
-<!-- $Id: pom.xml 51 2009-11-16 10:54:39Z dautelle $ -->
+<!-- $Id: pom.xml 68 2009-11-19 16:22:41Z dautelle $ -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -25,7 +25,7 @@
     <groupId>javax.measure</groupId>
     <artifactId>jsr-275</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <name>JSR-275</name>
     <url>https://kenai.com/projects/jsr-275</url>
 
@@ -340,7 +340,7 @@
                             <Implementation-Version>${project.version}</Implementation-Version>
 	            			<!-- mode>development</mode> TODO call it stage?              
 	            			<SCM-Revision>${buildNumber}</SCM-Revision-->
-                            <SCM-Revision>$Revision: 51 $</SCM-Revision>
+                            <SCM-Revision>$Revision: 68 $</SCM-Revision>
                         </manifestEntries>
                         <manifestFile>src/main/java/META-INF/MANIFEST.MF</manifestFile>
                     </archive>
